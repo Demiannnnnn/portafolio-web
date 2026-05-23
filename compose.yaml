@@ -9,14 +9,14 @@ services:
   frontend:
     build: ./frontend
     ports:
-      -":5173"
+      -":${frontend_port}"
     networks:
       - frontend-network
 
   backend:
     build: ./backend
     ports:
-      -":3000"
+      -":${backend_port}"
     networks:
       - backend-network
     depends_on:
@@ -25,7 +25,36 @@ services:
     image: postgres:15-alpine
     restart: always
     environment:
-      - POSTGRES_USER_FILES: ${}
-      - POSTGRES_PASSWORD_FILES: 
-  
+      - POSTGRES_USER_FILES: /run/secrets/db_user
+      - POSTGRES_PASSWORD_FILES: /run/secrets/db_password
+      - POSTGRES_DB: /run/secrets/db_name
 
+    ports:
+      -":${db_port}"
+    volumes:
+      -postgres_data:/var/lib/postgres/data
+      -./db-init:/docker-entrypoint-initdb.d
+    secrets:
+      - db_user
+      - db_password
+      - db_name
+    networks:
+      - backend-network
+
+
+secrets:
+  db_user:
+    file: ${db_user}
+  db_password:
+    file: ${db_password}
+  db_name:
+    file: ${db_name}
+
+volumes:
+  postgres_data:
+  
+networks:
+  backend-network:
+    driver: bridge
+  frontend-network:
+    driver: bridge
