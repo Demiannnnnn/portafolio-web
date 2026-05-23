@@ -1,0 +1,36 @@
+#enviroment and secrets
+.env
+.env.local
+secrets/
+*.txt
+
+#Rust
+/target/
+**/*.rs.bk
+
+#Node.js/React
+/node_modules/
+dist/
+dist-ssr/
+.output
+.vite/
+# npm logs
+npm-debug.log*
+yarn-debug.log*
+yarn-test.log*
+
+# Docker
+*.log
+*.sqlite
+*.sqlite-journal
+
+# SO and editor files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+# Other IDEs
+.idea/
+*.swp
+*.swo
