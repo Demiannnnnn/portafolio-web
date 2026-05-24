@@ -2,21 +2,24 @@ services:
   proxy:
     build: ./proxy
     ports:
-      -"80:80"
+      - "${proxy_port}:${proxy_port}"
     networks:
       - backend-network
       - frontend-network
+    depends_on:
+      - backend
+      - frontend
   frontend:
     build: ./frontend
-    ports:
-      -":${frontend_port}"
+    ports: 
+      - ":${frontend_port}"
     networks:
       - frontend-network
 
   backend:
     build: ./backend
     ports:
-      -":${backend_port}"
+      - ":${backend_port}"
     networks:
       - backend-network
     depends_on:
@@ -25,15 +28,15 @@ services:
     image: postgres:15-alpine
     restart: always
     environment:
-      - POSTGRES_USER_FILES: /run/secrets/db_user
-      - POSTGRES_PASSWORD_FILES: /run/secrets/db_password
-      - POSTGRES_DB: /run/secrets/db_name
+       POSTGRES_USER_FILE: /run/secrets/db_user
+       POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+       POSTGRES_DB: /run/secrets/db_name
 
     ports:
-      -":${db_port}"
+      - ":${db_port}"
     volumes:
-      -postgres_data:/var/lib/postgres/data
-      -./db-init:/docker-entrypoint-initdb.d
+      - postgres_data:/var/lib/postgres/data
+      - ./db-init:/docker-entrypoint-initdb.d
     secrets:
       - db_user
       - db_password
