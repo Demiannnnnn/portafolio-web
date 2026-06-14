@@ -1,8 +1,10 @@
 services:
   proxy:
     build: ./proxy
-    ports:
-      - "${proxy_port}:${proxy_port}"
+    environment:
+      - proxy_port=${proxy_port}
+      - backend_port=${backend_port}
+      - frontend_port=${frontend_port}
     networks:
       - backend-network
       - frontend-network
