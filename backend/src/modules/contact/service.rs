@@ -1,40 +1,27 @@
-use std::sync::Mutex;
+use std::sync::Arc;
 
-use uuid::Uuid;
-
-use super::model::{Contact, ContactResponse, CreateContactRequest};
+use super::{model::{ContactResponse, CreateContactRequest}, repository::ContactRepository};
 
 #[derive(Debug, Default)]
 pub struct ContactService {
-	contacts: Mutex<Vec<Contact>>,
+	repository: Arc<ContactRepository>,
 }
 
 impl ContactService {
+	pub fn new(repository: Arc<ContactRepository>) -> Self {
+		Self { repository }
+	}
+
 	pub async fn create_contact(&self, payload: CreateContactRequest) -> ContactResponse {
-		let contact = Contact {
-			id: Uuid::new_v4(),
-			name: payload.name,
-			email: payload.email,
-			subject: payload.subject,
-			message: payload.message,
-			is_resolved: false,
-			created_at: chrono::Utc::now(),
-			visitor_id: None,
-		};
-
-		let response = ContactResponse::from(contact.clone());
-
-		if let Ok(mut contacts) = self.contacts.lock() {
-			contacts.push(contact);
-		}
-
-		response
+		let contact = self.repository.create_contact(payload);
+		ContactResponse::from(contact)
 	}
 
 	pub async fn list_contacts(&self) -> Vec<ContactResponse> {
-		self.contacts
-			.lock()
-			.map(|contacts| contacts.iter().cloned().map(ContactResponse::from).collect())
-			.unwrap_or_default()
+		self.repository
+			.list_contacts()
+			.into_iter()
+			.map(ContactResponse::from)
+			.collect()
 	}
 }
