@@ -1,14 +1,13 @@
 mod modules;
 
-use axum::{routing::get, Router};
 use std::net::SocketAddr;
+
+use modules::app::build_app;
 
 #[tokio::main]
 async fn main() {
-    // Definimos una ruta base para verificar la API
-    let app = Router::new().route("/api/ping", get(|| async { "pong" }));
+    let app = build_app();
 
-    // Escuchamos en la IP 0.0.0.0 y el puerto que configuraste (ej. 8000)
     let addr = SocketAddr::from(([0, 0, 0, 0], 8000));
     println!("🚀 Backend Axum corriendo en http://{}", addr);
 

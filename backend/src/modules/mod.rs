@@ -1,3 +1,4 @@
+pub mod app;
 pub mod contact;
 pub mod ai;
 pub mod security;
