@@ -1,3 +1,4 @@
+mod shared;
 mod modules;
 
 use std::net::SocketAddr;
