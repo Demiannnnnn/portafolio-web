@@ -6,7 +6,7 @@ use super::model::{Contact, CreateContactRequest};
 
 #[derive(Debug, Default)]
 pub struct ContactRepository {
-	    contacts: Mutex<Vec<Contact>>,
+	contacts: Mutex<Vec<Contact>>,
 }
 
 impl ContactRepository {
