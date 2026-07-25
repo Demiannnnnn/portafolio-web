@@ -17,6 +17,7 @@ pub struct RegisterVisitorRequest {
 pub struct TemporaryVisitor {
     pub id: Uuid,
     pub session_token: Uuid,
+    pub ip_address: String,
     pub ip_hash: String,
     pub browser_name: Option<String>,
     pub browser_version: Option<String>,
@@ -41,4 +42,13 @@ impl From<TemporaryVisitor> for TemporaryVisitorResponse {
             first_seen_at: visitor.first_seen_at.to_rfc3339(),
         }
     }
+}
+
+#[derive(Debug, Deserialize)]
+pub struct IpApiResponse {
+    pub status: Option<String>,
+    #[serde(rename = "countryCode")]
+    pub country_code: Option<String>,
+    pub city: Option<String>,
+    pub isp: Option<String>,
 }
