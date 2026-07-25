@@ -11,29 +11,6 @@ import {
 
 const SESSION_STORAGE_KEY = "portfolio.visitor.session_token";
 
-const endpointCards = [
-  {
-    method: "GET",
-    path: "/api/ping",
-    description: "Comprobación rápida de que el backend está vivo.",
-  },
-  {
-    method: "POST",
-    path: "/api/visitors/register",
-    description: "Registra o refresca el visitante anónimo de la sesión.",
-  },
-  {
-    method: "GET",
-    path: "/api/visitors/current",
-    description: "Recupera el visitante actual usando el session token.",
-  },
-  {
-    method: "POST",
-    path: "/api/contact",
-    description: "Envía el formulario de contacto.",
-  },
-];
-
 function detectVisitorMetadata(): VisitorPayload {
   const userAgent = navigator.userAgent;
   const platform = navigator.platform || undefined;
@@ -73,7 +50,6 @@ function App() {
   );
   const [visitorError, setVisitorError] = useState<string | null>(null);
   const [visitorLoading, setVisitorLoading] = useState(true);
-  const [trackingVisitor, setTrackingVisitor] = useState(false);
 
   const [contactForm, setContactForm] = useState<ContactPayload>({
     name: "",
@@ -144,29 +120,6 @@ function App() {
     };
   }, []);
 
-  const handleRetryVisitor = async () => {
-    try {
-      setTrackingVisitor(true);
-      setVisitorError(null);
-
-      const registered = await registerVisitor(detectVisitorMetadata());
-      window.localStorage.setItem(
-        SESSION_STORAGE_KEY,
-        registered.session_token,
-      );
-      setVisitor(registered);
-      setVisitorMessage("Visitante sincronizado otra vez.");
-    } catch (error) {
-      setVisitorError(
-        error instanceof Error
-          ? error.message
-          : "No se pudo registrar el visitante.",
-      );
-    } finally {
-      setTrackingVisitor(false);
-    }
-  };
-
   const handleContactChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -208,22 +161,7 @@ function App() {
     <main className="app-shell">
       <section className="hero panel">
         <div className="hero-copy">
-          <p className="eyebrow">Portfolio interactivo</p>
-          <h1>Un sitio sin login, pero con memoria de sesión.</h1>
-          <p className="lead">
-            Este frontend consume los endpoints de visitors y contact para
-            registrar visitantes anónimos y enviar mensajes desde el formulario
-            del portafolio.
-          </p>
-
           <div className="hero-actions">
-            <button
-              type="button"
-              className="primary-button"
-              onClick={handleRetryVisitor}
-            >
-              {trackingVisitor ? "Sincronizando..." : "Registrar visitante"}
-            </button>
             <span className="status-chip">
               Backend base: <strong>/api</strong>
             </span>
@@ -263,16 +201,6 @@ function App() {
               <span className="detail-label">First seen</span>
               <p>{visitor?.first_seen_at ?? "Sin fecha disponible"}</p>
             </div>
-          </div>
-
-          <div className="endpoint-list">
-            {endpointCards.map((endpoint) => (
-              <article className="endpoint-card" key={endpoint.path}>
-                <span className="endpoint-method">{endpoint.method}</span>
-                <code>{endpoint.path}</code>
-                <p>{endpoint.description}</p>
-              </article>
-            ))}
           </div>
 
           {visitorError ? <p className="error-box">{visitorError}</p> : null}

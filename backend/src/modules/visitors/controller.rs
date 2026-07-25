@@ -10,16 +10,27 @@ pub async fn register_visitor(
 	State(app_state): State<AppState>,
 	headers: HeaderMap,
 	Json(payload): Json<RegisterVisitorRequest>,
-) -> Json<TemporaryVisitorResponse> {
+) -> Result<Json<TemporaryVisitorResponse>, StatusCode> {
 	let ip_source = headers
-		.get("x-forwarded-for")
+		.get("cf-connecting-ip")
 		.and_then(|value| value.to_str().ok())
+		.or_else(|| {
+			headers
+				.get("x-forwarded-for")
+				.and_then(|value| value.to_str().ok())
+				.and_then(|s| s.split(',').next())
+				.map(|s| s.trim())
+		})
 		.or_else(|| headers.get("x-real-ip").and_then(|value| value.to_str().ok()))
 		.unwrap_or("unknown")
 		.to_string();
 
 	let visitor_service: &Arc<VisitorService> = &app_state.visitor_service;
-	Json(visitor_service.register_visitor(payload, ip_source).await)
+	visitor_service
+		.register_visitor(ip_source, payload)
+		.await
+		.map(Json)
+		.map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)
 }
 
 pub async fn current_visitor(
@@ -36,6 +47,7 @@ pub async fn current_visitor(
 	visitor_service
 		.find_by_session_token(session_token)
 		.await
+		.map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
 		.map(Json)
 		.ok_or(StatusCode::NOT_FOUND)
 }

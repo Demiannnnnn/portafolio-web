@@ -3,6 +3,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE temporary_visitors (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     session_token UUID NOT NULL UNIQUE,
+    ip_address VARCHAR(64) NOT NULL,
     ip_hash VARCHAR(64) NOT NULL,
     browser_name VARCHAR(50),
     browser_version VARCHAR(20),

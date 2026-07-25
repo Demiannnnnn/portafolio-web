@@ -7,7 +7,7 @@ use modules::app::build_app;
 
 #[tokio::main]
 async fn main() {
-    let app = build_app();
+    let app = build_app().await;
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 8000));
     println!("🚀 Backend Axum corriendo en http://{}", addr);
