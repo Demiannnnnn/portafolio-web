@@ -1,0 +1,49 @@
+.topo-frame {
+  background: #0D1110;
+  border: 1px solid #232C28;
+  position: relative;
+  height: 60vh;
+  min-height: 400px;
+  overflow: hidden;
+  border-radius: 24px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+}
+
+.topo-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+
+.topo-tag {
+  position: absolute;
+  top: 24px;
+  left: 28px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent-glow);
+  letter-spacing: 0.06em;
+  pointer-events: none;
+}
+
+.topo-hint {
+  position: absolute;
+  bottom: 24px;
+  right: 28px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: rgba(255,255,255,0.3);
+  pointer-events: none;
+}
+
+.topology-section {
+  max-width: 1560px;
+  margin: 0 auto;
+  padding: 40px 60px;
+}
+@media (max-width: 700px) {
+  .topology-section {
+    padding: 40px 24px;
+  }
+}
