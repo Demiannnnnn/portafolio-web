@@ -1,0 +1,8 @@
+/Users/demian/Documents/GitHub/Portfolio/backend/target/debug/deps/objc2_system_configuration-b0db865675c1b3d3.d: /Users/demian/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-system-configuration-0.3.2/src/lib.rs /Users/demian/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-system-configuration-0.3.2/src/generated/mod.rs /Users/demian/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-system-configuration-0.3.2/src/generated/SCDynamicStore.rs /Users/demian/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-system-configuration-0.3.2/src/generated/SCDynamicStoreCopySpecific.rs
+
+/Users/demian/Documents/GitHub/Portfolio/backend/target/debug/deps/libobjc2_system_configuration-b0db865675c1b3d3.rmeta: /Users/demian/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-system-configuration-0.3.2/src/lib.rs /Users/demian/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-system-configuration-0.3.2/src/generated/mod.rs /Users/demian/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-system-configuration-0.3.2/src/generated/SCDynamicStore.rs /Users/demian/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-system-configuration-0.3.2/src/generated/SCDynamicStoreCopySpecific.rs
+
+/Users/demian/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-system-configuration-0.3.2/src/lib.rs:
+/Users/demian/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-system-configuration-0.3.2/src/generated/mod.rs:
+/Users/demian/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-system-configuration-0.3.2/src/generated/SCDynamicStore.rs:
+/Users/demian/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-system-configuration-0.3.2/src/generated/SCDynamicStoreCopySpecific.rs:
