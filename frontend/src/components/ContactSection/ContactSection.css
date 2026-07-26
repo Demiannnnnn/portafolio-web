@@ -1,0 +1,46 @@
+.contact-wrap {
+  padding: 120px 44px;
+  text-align: center;
+}
+
+.contact-inner {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.contact-inner h2 {
+  font-family: var(--display);
+  font-size: clamp(2rem,5vw,3rem);
+  margin-bottom: 16px;
+  letter-spacing: -0.03em;
+}
+
+.contact-inner p {
+  font-size: 1.1rem;
+  color: var(--muted);
+  margin-bottom: 40px;
+}
+
+.btn-submit {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 18px 40px;
+  background: var(--ink);
+  color: #fff;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  text-decoration: none;
+}
+
+.btn-submit:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 25px rgba(0,0,0,0.15);
+  background: var(--accent);
+}
