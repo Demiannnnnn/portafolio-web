@@ -32,19 +32,20 @@ spec:
               value: "5432"
             - name: DATABASE_USER_FILE
               value: /run/secrets/db-user
-          image: backend
+          image: portfolio-backend:latest
+          imagePullPolicy: Never
           name: backend
           ports:
             - containerPort: 8000
               protocol: TCP
           volumeMounts:
-            - mountPath: /run/secrets
+            - mountPath: /run/secrets/db-user
               name: db-user
               subPath: db-user
-            - mountPath: /run/secrets
+            - mountPath: /run/secrets/db-password
               name: db-password
               subPath: db-password
-            - mountPath: /run/secrets
+            - mountPath: /run/secrets/db-name
               name: db-name
               subPath: db-name
       restartPolicy: Always

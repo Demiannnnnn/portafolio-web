@@ -5,8 +5,11 @@ secrets/
 *.txt
 
 #Rust
-/target/
+/backend/target/
 **/*.rs.bk
+db_user.txt
+db_password.txt
+
 
 #Node.js/React
 /node_modules/
