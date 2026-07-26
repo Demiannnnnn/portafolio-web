@@ -1,124 +1,274 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useEffect } from 'react';
+import { motion } from 'framer-motion';
+import BackgroundGlow from './components/BackgroundGlow/BackgroundGlow';
+import Header from './components/Header/Header';
+import HeroBento from './components/HeroBento/HeroBento';
+import TopologyScene from './components/TopologyScene/TopologyScene';
+import StackTable from './components/StackTable/StackTable';
+import ProjectCard from './components/ProjectCard/ProjectCard';
+import ContactSection from './components/ContactSection/ContactSection';
+import Footer from './components/Footer/Footer';
+import {
+  registerVisitor,
+  getCurrentVisitor,
+  type VisitorPayload,
+} from './services/api';
+import type { Project } from './types/portfolio';
+
+const SESSION_STORAGE_KEY = 'portfolio.visitor.session_token';
+
+function detectVisitorMetadata(): VisitorPayload {
+  const userAgent = navigator.userAgent;
+  const platform = navigator.platform || undefined;
+  const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(userAgent);
+
+  const browserMatch = userAgent.match(
+    /(Firefox|Chrome|Edg|OPR|Safari)\/([\d.]+)/,
+  );
+  const browserName = browserMatch?.[1] ?? 'Unknown';
+  const browserVersion = browserMatch?.[2];
+
+  let osName: string | undefined;
+  if (/Windows/i.test(userAgent)) {
+    osName = 'Windows';
+  } else if (/Macintosh|Mac OS/i.test(userAgent)) {
+    osName = 'macOS';
+  } else if (/Android/i.test(userAgent)) {
+    osName = 'Android';
+  } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
+    osName = 'iOS';
+  } else if (/Linux/i.test(userAgent)) {
+    osName = 'Linux';
+  }
+
+  return {
+    browser_name: browserName,
+    browser_version: browserVersion,
+    os_name: osName ?? platform,
+    device_type: isMobile ? 'mobile' : 'desktop',
+  };
+}
+
+/* Proyectos extraídos directamente desde los repositorios de GitHub de Demian */
+const projects: Project[] = [
+  {
+    namespace: 'security/axum-keylogger-api',
+    statusLabel: 'Controlled Env · Security',
+    mediaPlaceholder: '[Rust Axum Security Server]',
+    title: 'API de Ciberseguridad & Telemetría en Rust',
+    description:
+      'API REST desarrollada en Rust utilizando el framework Axum. Diseñada para la recepción, análisis y procesamiento concurrente de eventos de telemetría y monitoreo de seguridad en entornos controlados.',
+    chips: ['Rust', 'Axum', 'Cybersecurity', 'REST API', 'Networking'],
+    links: [
+      { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/Api-Axum-Keylogger' },
+    ],
+  },
+  {
+    namespace: 'deployment/petcloud-adopcion',
+    statusLabel: 'Active · Production',
+    mediaPlaceholder: '[PetCloud Dashboard & QA]',
+    title: 'PetCloud — Plataforma de Adopción de Mascotas',
+    description:
+      'Plataforma web completa para la gestión y adopción de mascotas. Lideré el aseguramiento de calidad (QA) diseñando y ejecutando suites de pruebas E2E con Cypress, validando endpoints y fiabilidad del dashboard.',
+    chips: ['React', 'JavaScript', 'Spring Boot', 'Cypress', 'QA & E2E'],
+    links: [
+      { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/Constr-Proy_fork' },
+    ],
+  },
+  {
+    namespace: 'deployment/causas-judiciales-docker',
+    statusLabel: 'Multi-Container · Docker',
+    mediaPlaceholder: '[Judicial System Docker Infra]',
+    title: 'Sistema de Procesamiento de Causas Judiciales',
+    description:
+      'Sistema para la gestión y procesamiento de causas judiciales desplegado sobre una infraestructura avanzada multinodo mediante contenedores Docker y scripts de orquestación.',
+    chips: ['Docker', 'Shell', 'Sistemas Distribuidos', 'Infraestructura'],
+    links: [
+      { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/Licitacion_SistemaCausasJudiciales_fork' },
+    ],
+  },
+  {
+    namespace: 'ml/dermatology-naive-bayes',
+    statusLabel: 'Trained Model · UCI Dataset',
+    mediaPlaceholder: '[Machine Learning Plot]',
+    title: 'Clasificador IA de Enfermedades Dermatológicas',
+    description:
+      'Proyecto de Machine Learning para la clasificación automatizada de 6 tipos de patologías dermatológicas usando el algoritmo Naive Bayes. Entrenado sobre el dataset UCI Dermatology (366 instancias, 34 características clínicas).',
+    chips: ['Python', 'Machine Learning', 'Naive Bayes', 'Data Science'],
+    links: [
+      { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/IA-Dermatology' },
+    ],
+  },
+  {
+    namespace: 'deployment/facturacion-inventario',
+    statusLabel: 'Active · Business System',
+    mediaPlaceholder: '[Billing & Stock System]',
+    title: 'Sistema de Facturación e Inventario Digital',
+    description:
+      'Software de gestión comercial diseñado para empresas de escala mediana. Proporciona control de inventarios automatizado y emisión de facturación digital en tiempo real.',
+    chips: ['JavaScript', 'Node.js', 'REST API', 'Gestión Comercial'],
+    links: [
+      { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/Sistema-facturaje-inventario' },
+    ],
+  },
+  {
+    namespace: 'distributed/tickets-middleware',
+    statusLabel: 'Running · Middleware',
+    mediaPlaceholder: '[Distributed Middleware]',
+    title: 'Simulador de Venta de Tickets Distribuidos',
+    description:
+      'Sistema distribuido compuesto por 3 aplicaciones independientes conectadas a través de un middleware de comunicación customizado, orquestado completamente en Docker.',
+    chips: ['Sistemas Distribuidos', 'Docker', 'Middleware', 'JavaScript'],
+    links: [
+      { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/Proy3_SD_fork' },
+    ],
+  },
+  {
+    namespace: 'backend/api-contabilidad',
+    statusLabel: 'REST Service · Active',
+    mediaPlaceholder: '[Accounting API Server]',
+    title: 'API REST de Contabilidad & Clientes',
+    description:
+      'Servidor backend propio para la gestión contable, administración de registros de clientes y control de operaciones financieras.',
+    chips: ['JavaScript', 'Node.js', 'Express', 'REST API'],
+    links: [
+      { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/Server-Sistema-Contabiliadad-Clientes' },
+    ],
+  },
+  {
+    namespace: 'distributed/combustible-gasolinera',
+    statusLabel: 'Distributed System · Concurrency',
+    mediaPlaceholder: '[Gas Station Monitor]',
+    title: 'Sistema Distribuido de Abastecimiento de Combustible',
+    description:
+      'Aplicación distribuida para estaciones de servicio que gestiona concurrentemente la distribución de gasolina, precios y control de stock entre nodos interconectados.',
+    chips: ['JavaScript', 'Sistemas Distribuidos', 'Concurrencia', 'Node.js'],
+    links: [
+      { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/sistema-combustible-distribuido' },
+    ],
+  },
+  {
+    namespace: 'compute/image-parallel-processing',
+    statusLabel: 'Benchmarked · Java Multithreading',
+    mediaPlaceholder: '[Parallel Image Filter Output]',
+    title: 'Procesamiento y Filtrado Paralelo de Imágenes',
+    description:
+      'Algoritmo desarrollado en Java para la reducción de ruido en imágenes digitales mediante programación en paralelo y secuencial, comparando aceleración y uso de CPU entre hilos.',
+    chips: ['Java', 'Parallel Programming', 'Multithreading', 'Algoritmos'],
+    links: [
+      { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/ProyectoSistemasDistribuidos_fork' },
+    ],
+  },
+  {
+    namespace: 'network/cisco-packet-tracer',
+    statusLabel: 'Configured · Packet Tracer',
+    mediaPlaceholder: '[Cisco Network Infrastructure]',
+    title: 'Diseño e Infraestructura de Redes Cisco',
+    description:
+      'Proyecto completo de diseño de red de comunicaciones en Cisco Packet Tracer. Incluye enrutamiento dinámico, segmentación VLAN y políticas de seguridad.',
+    chips: ['Packet Tracer', 'Networking', 'VLANs', 'Routing & Switching'],
+    links: [
+      { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/Proyecto_Redes_2' },
+    ],
+  },
+  {
+    namespace: 'dotfiles/arch-hyprland',
+    statusLabel: 'Daily Driver · Config',
+    mediaPlaceholder: '[Arch Linux Hyprland Setup]',
+    title: 'Arch Linux & Hyprland Custom Environment',
+    description:
+      'Dotfiles y scripts de configuración para entorno de escritorio en Arch Linux utilizando el compositor Wayland Hyprland, barra de estado y atajos personalizados.',
+    chips: ['Arch Linux', 'Hyprland', 'Wayland', 'Bash', 'Dotfiles'],
+    links: [
+      { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/config-arch' },
+    ],
+  },
+];
+
+/* Apple-style easing */
+const appleEase = [0.25, 0.46, 0.45, 0.94] as const;
 
 function App() {
-  const [count, setCount] = useState(0)
+  // Background visitor tracking (silent, no UI)
+  useEffect(() => {
+    let cancelled = false;
+
+    const bootstrapVisitor = async () => {
+      try {
+        const storedToken = window.localStorage.getItem(SESSION_STORAGE_KEY);
+
+        if (storedToken) {
+          try {
+            await getCurrentVisitor(storedToken);
+            if (!cancelled) return;
+          } catch {
+            window.localStorage.removeItem(SESSION_STORAGE_KEY);
+          }
+        }
+
+        const registered = await registerVisitor(detectVisitorMetadata());
+
+        if (!cancelled) {
+          window.localStorage.setItem(
+            SESSION_STORAGE_KEY,
+            registered.session_token,
+          );
+        }
+      } catch {
+        // Visitor tracking is non-critical; fail silently
+      }
+    };
+
+    void bootstrapVisitor();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <>
-    
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-            
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
+      <BackgroundGlow />
+      <Header />
+
+      <HeroBento />
+
+      <TopologyScene />
+
+      <section
+        id="proyectos"
+        className="section-spacing"
+        style={{ maxWidth: 1560, margin: '0 auto', padding: '0 60px' }}
+      >
+        <motion.div
+          className="eyebrow"
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.6, ease: appleEase }}
         >
-          Count is {count}
-        </button>
+          STACK & CONFIGURACIÓN
+        </motion.div>
+        <StackTable />
+
+        <motion.div
+          className="eyebrow"
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.6, ease: appleEase }}
+        >
+          DESPLIEGUES & PROYECTOS ({projects.length})
+        </motion.div>
+        {projects.map((project) => (
+          <ProjectCard key={project.namespace} project={project} />
+        ))}
       </section>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+      <ContactSection />
+      <Footer />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

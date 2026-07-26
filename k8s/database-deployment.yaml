@@ -36,13 +36,13 @@ spec:
             - containerPort: 5432
               protocol: TCP
           volumeMounts:
-            - mountPath: /run/secrets
+            - mountPath: /run/secrets/db-user
               name: db-user
               subPath: db-user
-            - mountPath: /run/secrets
+            - mountPath: /run/secrets/db-password
               name: db-password
               subPath: db-password
-            - mountPath: /run/secrets
+            - mountPath: /run/secrets/db-name
               name: db-name
               subPath: db-name
             - mountPath: /var/lib/postgresql/data

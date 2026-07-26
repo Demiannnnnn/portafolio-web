@@ -21,7 +21,8 @@ spec:
         io.kompose.service: frontend
     spec:
       containers:
-        - image: frontend
+        - image: portfolio-frontend:latest
+          imagePullPolicy: Never
           name: frontend
           ports:
             - containerPort: 80
