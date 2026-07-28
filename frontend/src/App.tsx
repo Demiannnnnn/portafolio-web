@@ -49,7 +49,6 @@ function detectVisitorMetadata(): VisitorPayload {
   };
 }
 
-/* Proyectos extraídos directamente desde los repositorios de GitHub de Demian */
 const projects: Project[] = [
   {
     namespace: 'security/axum-keylogger-api',
@@ -185,11 +184,10 @@ const projects: Project[] = [
   },
 ];
 
-/* Apple-style easing */
 const appleEase = [0.25, 0.46, 0.45, 0.94] as const;
 
 function App() {
-  // Background visitor tracking (silent, no UI)
+  // Background visitor tracking (silent)
   useEffect(() => {
     let cancelled = false;
 
@@ -215,7 +213,7 @@ function App() {
           );
         }
       } catch {
-        // Visitor tracking is non-critical; fail silently
+        // Visitor tracking is non-critical
       }
     };
 
@@ -231,42 +229,59 @@ function App() {
       <BackgroundGlow />
       <Header />
 
-      <HeroBento />
+      {/* SECCIÓN 1: INICIAL & HABILIDADES */}
+      <div id="inicial">
+        <HeroBento />
+      </div>
 
-      <TopologyScene />
-
-      <section
-        id="proyectos"
-        className="section-spacing"
-        style={{ maxWidth: 1560, margin: '0 auto', padding: '0 60px' }}
-      >
+      {/* SECCIÓN 2: EL GRÁFICO (TOPOLOGÍA 3D & STACK) */}
+      <section id="grafico" className="section-spacing">
         <motion.div
           className="eyebrow"
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
+          initial={{ opacity: 0, x: -30, filter: 'blur(6px)' }}
+          whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6, ease: appleEase }}
         >
-          STACK & CONFIGURACIÓN
+          TOPOLOGÍA DE RED & ENTORNO 3D
         </motion.div>
-        <StackTable />
+        <TopologyScene />
 
         <motion.div
           className="eyebrow"
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
+          style={{ marginTop: 60 }}
+          initial={{ opacity: 0, x: -30, filter: 'blur(6px)' }}
+          whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: appleEase }}
+        >
+          STACK & CONFIGURACIÓN DE SISTEMA
+        </motion.div>
+        <StackTable />
+      </section>
+
+      {/* SECCIÓN 3: MIS PROYECTOS */}
+      <section id="proyectos" className="section-spacing">
+        <motion.div
+          className="eyebrow"
+          initial={{ opacity: 0, x: -30, filter: 'blur(6px)' }}
+          whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6, ease: appleEase }}
         >
           DESPLIEGUES & PROYECTOS ({projects.length})
         </motion.div>
+
         {projects.map((project) => (
           <ProjectCard key={project.namespace} project={project} />
         ))}
       </section>
 
-      <ContactSection />
-      <Footer />
+      {/* SECCIÓN 4: EL CONTACTO & FOOTER */}
+      <div id="contacto">
+        <ContactSection />
+        <Footer />
+      </div>
     </>
   );
 }

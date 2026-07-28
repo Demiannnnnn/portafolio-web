@@ -37,8 +37,8 @@ body {
   font-family: var(--body);
   font-size: 16px;
   line-height: 1.6;
-  overflow-x: hidden;
   position: relative;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -58,10 +58,11 @@ a {
 
 /* --- Section Container --- */
 section {
-  max-width: 1140px;
+  max-width: 1560px;
   margin: 0 auto;
-  padding: 0 44px;
+  padding: 0 60px;
 }
+
 @media (max-width: 700px) {
   section {
     padding: 0 24px;
@@ -83,8 +84,9 @@ section {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
+
 .eyebrow::after {
   content: '';
   flex: 1;
@@ -101,6 +103,7 @@ section {
   display: inline-block;
   box-shadow: 0 0 0 3px var(--accent-soft);
 }
+
 @keyframes pulse {
   0%, 100% {
     opacity: 1;
@@ -111,6 +114,7 @@ section {
     box-shadow: 0 0 0 6px rgba(63, 107, 82, 0.05);
   }
 }
+
 .status-dot.live {
   animation: pulse 2s ease-in-out infinite;
 }
