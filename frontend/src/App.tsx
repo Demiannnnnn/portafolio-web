@@ -243,7 +243,7 @@ function App() {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6, ease: appleEase }}
         >
-          TOPOLOGÍA DE RED & ENTORNO 3D
+          INFRAESTRUCTURA KUBERNETES & ENTORNO 3D
         </motion.div>
         <TopologyScene />
 

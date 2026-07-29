@@ -9,6 +9,7 @@ interface ProjectCardProps {
 const ProjectCard = ({ project }: ProjectCardProps) => {
   return (
     <motion.div 
+      id={`project-${project.namespace.replace(/[^a-zA-Z0-9-]/g, '-')}`}
       className="deploy"
       initial={{ opacity: 0, y: 80 }} 
       whileInView={{ opacity: 1, y: 0 }} 
