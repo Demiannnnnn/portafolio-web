@@ -246,18 +246,6 @@ function App() {
           INFRAESTRUCTURA KUBERNETES & ENTORNO 3D
         </motion.div>
         <TopologyScene />
-
-        <motion.div
-          className="eyebrow"
-          style={{ marginTop: 60 }}
-          initial={{ opacity: 0, x: -30, filter: 'blur(6px)' }}
-          whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, ease: appleEase }}
-        >
-          STACK & CONFIGURACIÓN DE SISTEMA
-        </motion.div>
-        <StackTable />
       </section>
 
       {/* SECCIÓN 3: MIS PROYECTOS */}

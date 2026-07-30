@@ -7,6 +7,7 @@ interface Pod {
   name: string;
   role: string;
   info: string;
+  techIcon?: string;
   namespace?: string;
   projectTitle?: string;
 }
@@ -22,6 +23,7 @@ interface SelectedPod {
   role: string;
   info: string;
   node: string;
+  techIcon?: string;
   namespace?: string;
   projectTitle?: string;
 }
@@ -42,7 +44,7 @@ const PRESETS: TopologyPreset[] = [
     label: '⚡ Vista Global / Cluster',
     title: 'Arquitectura Global de Producción (11 Proyectos)',
     description:
-      'Vista panorámica completa de toda la infraestructura en producción. Muestra los 11 proyectos distribuidos en los nodos principales de cómputo (prod-node-1 y prod-node-2) interconectados a través del Ingress Controller central.',
+      'Vista panorámica completa de la infraestructura en producción. Muestra los 11 proyectos distribuidos en los nodos de cómputo principales (prod-node-1 y prod-node-2) interconectados a través del Ingress Controller central.',
     techPills: ['11 Proyectos', 'Multi-node', 'Nginx Ingress', 'Docker', 'Kubernetes', 'Cloud VPS'],
     nodes: [
       {
@@ -53,6 +55,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'petcloud',
             role: 'Plataforma Web Adopción',
             info: 'React + Spring Boot + PostgreSQL + Cypress QA',
+            techIcon: 'react',
             namespace: 'deployment/petcloud-adopcion',
             projectTitle: 'PetCloud — Plataforma de Adopción',
           },
@@ -60,6 +63,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'axum-keylogger',
             role: 'API Ciberseguridad',
             info: 'Rust Axum REST API + Event Processing Stream',
+            techIcon: 'axum',
             namespace: 'security/axum-keylogger-api',
             projectTitle: 'API Ciberseguridad & Telemetría Rust',
           },
@@ -67,6 +71,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'facturacion',
             role: 'Inventario & Facturación',
             info: 'Node.js + REST API + Control Comercial',
+            techIcon: 'nodejs',
             namespace: 'deployment/facturacion-inventario',
             projectTitle: 'Sistema de Facturación e Inventario',
           },
@@ -74,6 +79,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'contabilidad-api',
             role: 'API Contable & Clientes',
             info: 'Node.js + Express REST API Server',
+            techIcon: 'nodejs',
             namespace: 'backend/api-contabilidad',
             projectTitle: 'API REST Contabilidad & Clientes',
           },
@@ -81,6 +87,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'dermatology-ml',
             role: 'Clasificador IA',
             info: 'Python + Naive Bayes + UCI Dataset Processing',
+            techIcon: 'python',
             namespace: 'ml/dermatology-naive-bayes',
             projectTitle: 'Clasificador IA Dermatológico',
           },
@@ -88,6 +95,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'image-parallel',
             role: 'Procesamiento Paralelo',
             info: 'Java Multithreading + Parallel Image Filter',
+            techIcon: 'java',
             namespace: 'compute/image-parallel-processing',
             projectTitle: 'Procesamiento Paralelo de Imágenes',
           },
@@ -101,6 +109,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'causas-judiciales',
             role: 'Sistema de Causas',
             info: 'Docker Multi-nodo + Shell Orchestration',
+            techIcon: 'docker',
             namespace: 'deployment/causas-judiciales-docker',
             projectTitle: 'Sistema de Causas Judiciales',
           },
@@ -108,6 +117,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'tickets-middleware',
             role: 'Tickets Distribuidos',
             info: 'Distributed Middleware + 3 Apps en Docker',
+            techIcon: 'docker',
             namespace: 'distributed/tickets-middleware',
             projectTitle: 'Simulador Tickets Distribuidos',
           },
@@ -115,6 +125,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'combustible-gas',
             role: 'Abastecimiento Distribuido',
             info: 'JavaScript + Node.js Concurrente',
+            techIcon: 'nodejs',
             namespace: 'distributed/combustible-gasolinera',
             projectTitle: 'Sistema Distribuido de Combustible',
           },
@@ -122,6 +133,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'cisco-network',
             role: 'Infraestructura Redes',
             info: 'Packet Tracer + VLANs + Routing',
+            techIcon: 'cisco',
             namespace: 'network/cisco-packet-tracer',
             projectTitle: 'Diseño e Infraestructura Cisco',
           },
@@ -129,6 +141,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'arch-hyprland',
             role: 'Entorno & Dotfiles',
             info: 'Arch Linux + Hyprland Wayland Compositor',
+            techIcon: 'arch',
             namespace: 'dotfiles/arch-hyprland',
             projectTitle: 'Arch Linux Custom Environment',
           },
@@ -152,18 +165,21 @@ const PRESETS: TopologyPreset[] = [
             name: 'frontend',
             role: 'React SPA Frontend (Puerto 80)',
             info: 'Deployment & Service portfolio-frontend:latest (frontend-deployment.yaml)',
+            techIcon: 'react',
             projectTitle: 'Portfolio React Frontend',
           },
           {
             name: 'backend',
             role: 'Rust Axum API (Puerto 8000)',
             info: 'Deployment & Service portfolio-backend:latest con K8s Secrets (backend-deployment.yaml)',
+            techIcon: 'axum',
             projectTitle: 'Portfolio Rust Axum Backend API',
           },
           {
             name: 'database',
             role: 'PostgreSQL 15 DB (Puerto 5432)',
             info: 'PostgreSQL 15 Alpine con PersistentVolumeClaim postgres-data (database-deployment.yaml)',
+            techIcon: 'postgres',
             projectTitle: 'Portfolio PostgreSQL 15 Database',
           },
         ],
@@ -187,6 +203,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'react-frontend',
             role: 'Frontend UI',
             info: 'Single Page Application cliente en React',
+            techIcon: 'react',
             namespace: 'deployment/petcloud-adopcion',
             projectTitle: 'PetCloud — React Web',
           },
@@ -194,6 +211,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'spring-boot-api',
             role: 'Backend Core',
             info: 'API REST principal desarrollada en Java Spring Boot',
+            techIcon: 'spring',
             namespace: 'deployment/petcloud-adopcion',
             projectTitle: 'PetCloud — Spring Boot REST',
           },
@@ -207,6 +225,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'postgres-db',
             role: 'Database & Storage',
             info: 'Base de datos PostgreSQL con volumen persistente',
+            techIcon: 'postgres',
             namespace: 'deployment/petcloud-adopcion',
             projectTitle: 'PetCloud — PostgreSQL DB',
           },
@@ -214,6 +233,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'cypress-runner',
             role: 'QA & E2E Testing',
             info: 'Contenedor de ejecución de pruebas Cypress',
+            techIcon: 'nodejs',
             namespace: 'deployment/petcloud-adopcion',
             projectTitle: 'PetCloud — Cypress QA',
           },
@@ -238,6 +258,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'axum-rest-api',
             role: 'High-Speed Ingest',
             info: 'Servidor HTTP Axum en Rust para recepción de eventos',
+            techIcon: 'axum',
             namespace: 'security/axum-keylogger-api',
             projectTitle: 'API Rust Axum Ingestion',
           },
@@ -245,6 +266,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'event-stream',
             role: 'Stream Processor',
             info: 'Procesamiento concurrente de eventos de telemetría',
+            techIcon: 'axum',
             namespace: 'security/axum-keylogger-api',
             projectTitle: 'Event Stream Processor',
           },
@@ -258,6 +280,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'security-logger',
             role: 'Security Audit',
             info: 'Módulo de auditoría y filtrado de logs en tiempo real',
+            techIcon: 'axum',
             namespace: 'security/axum-keylogger-api',
             projectTitle: 'Security Audit Logger',
           },
@@ -265,6 +288,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'storage-engine',
             role: 'Persistent Storage',
             info: 'Motor de almacenamiento optimizado para eventos',
+            techIcon: 'postgres',
             namespace: 'security/axum-keylogger-api',
             projectTitle: 'Security Event Store',
           },
@@ -289,6 +313,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'docker-master',
             role: 'Orchestrator',
             info: 'Controlador principal y orquestador Shell',
+            techIcon: 'docker',
             namespace: 'deployment/causas-judiciales-docker',
             projectTitle: 'Docker Master Orchestrator',
           },
@@ -296,6 +321,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'task-dispatcher',
             role: 'Task Queue',
             info: 'Distribuidor de cargas de trabajo entre nodos',
+            techIcon: 'docker',
             namespace: 'deployment/causas-judiciales-docker',
             projectTitle: 'Task Dispatcher',
           },
@@ -309,6 +335,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'worker-node-1',
             role: 'Compute Worker #1',
             info: 'Procesador distribuido de expedientes 1',
+            techIcon: 'docker',
             namespace: 'deployment/causas-judiciales-docker',
             projectTitle: 'Worker Node 1',
           },
@@ -316,6 +343,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'worker-node-2',
             role: 'Compute Worker #2',
             info: 'Procesador distribuido de expedientes 2',
+            techIcon: 'docker',
             namespace: 'deployment/causas-judiciales-docker',
             projectTitle: 'Worker Node 2',
           },
@@ -340,6 +368,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'custom-middleware',
             role: 'Communication Bus',
             info: 'Middleware propio de paso de mensajes y eventos',
+            techIcon: 'docker',
             namespace: 'distributed/tickets-middleware',
             projectTitle: 'Custom Middleware Bus',
           },
@@ -347,6 +376,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'sync-manager',
             role: 'State Sync',
             info: 'Gestor de consistencia de datos entre nodos',
+            techIcon: 'nodejs',
             namespace: 'distributed/tickets-middleware',
             projectTitle: 'State Sync Manager',
           },
@@ -360,6 +390,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'ticket-app-1',
             role: 'Sales Node #1',
             info: 'Instancia 1 de aplicación de venta de tickets',
+            techIcon: 'nodejs',
             namespace: 'distributed/tickets-middleware',
             projectTitle: 'Ticket App Instance 1',
           },
@@ -367,6 +398,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'ticket-app-2',
             role: 'Sales Node #2',
             info: 'Instancia 2 de aplicación de venta de tickets',
+            techIcon: 'nodejs',
             namespace: 'distributed/tickets-middleware',
             projectTitle: 'Ticket App Instance 2',
           },
@@ -374,6 +406,7 @@ const PRESETS: TopologyPreset[] = [
             name: 'ticket-app-3',
             role: 'Sales Node #3',
             info: 'Instancia 3 de aplicación de venta de tickets',
+            techIcon: 'nodejs',
             namespace: 'distributed/tickets-middleware',
             projectTitle: 'Ticket App Instance 3',
           },
@@ -383,41 +416,274 @@ const PRESETS: TopologyPreset[] = [
   },
 ];
 
+// --- PALETTE ANCHORED TO SITE LIGHT DESIGN SYSTEM ---
+// Base page bg: #EFF1EC | Ink: #14181A | Accent: #3F6B52 | Line: #D7DBD2
 const COLORS = {
-  cluster: 0x64748b,
-  node: 0x2563eb,
-  nodeBorder: 0x60a5fa,
-  pod: 0x10b981,
-  podCore: 0x34d399,
-  ingress: 0xf59e0b,
-  ingressGlow: 0xfbbf24,
-  trunkLine: 0x38bdf8,
-  grid: 0x1e293b,
-  gridAccent: 0x334155,
-  particle: 0x38bdf8,
+  cluster: 0x5b6461,       // Slate grey outline (#5B6461)
+  node: 0x3f6b52,          // Forest sage (#3F6B52)
+  nodeBorder: 0x2d4d3b,    // Dark sage border
+  pod: 0x14181a,           // High contrast dark charcoal pod shell (#14181A)
+  podCore: 0x3f6b52,       // Forest green core
+  ingress: 0xd97706,       // Warm amber orange (#D97706)
+  ingressGlow: 0xf59e0b,   // Amber glow
+  trunkLine: 0x3f6b52,     // Forest green line
+  grid: 0xd7dbd2,          // Soft sage grid lines (#D7DBD2)
+  gridAccent: 0xb9c0b4,    // Accent grid lines (#B9C0B4)
+  particle: 0x5b6461,      // Ambient stardust
 };
 
+// --- Dynamic Canvas Texture Generator (Light Card Style) ---
+function createTechLogoTexture(techIcon: string = 'generic'): THREE.CanvasTexture {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256;
+  canvas.height = 256;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return new THREE.CanvasTexture(canvas);
+
+  const key = techIcon.toLowerCase();
+
+  let bgColor = '#ffffff';
+  let accentColor = '#3f6b52';
+
+  if (key.includes('react')) {
+    bgColor = '#f0fdf4';
+    accentColor = '#0d9488';
+  } else if (key.includes('axum') || key.includes('rust')) {
+    bgColor = '#fff7ed';
+    accentColor = '#d97706';
+  } else if (key.includes('postgres') || key.includes('db') || key.includes('database')) {
+    bgColor = '#f0f9ff';
+    accentColor = '#0284c7';
+  } else if (key.includes('spring')) {
+    bgColor = '#f0fdf4';
+    accentColor = '#16a34a';
+  } else if (key.includes('node') || key.includes('express')) {
+    bgColor = '#f0fdf4';
+    accentColor = '#15803d';
+  } else if (key.includes('python')) {
+    bgColor = '#f0f9ff';
+    accentColor = '#0284c7';
+  } else if (key.includes('docker')) {
+    bgColor = '#f0f9ff';
+    accentColor = '#0284c7';
+  } else if (key.includes('java')) {
+    bgColor = '#fef2f2';
+    accentColor = '#dc2626';
+  } else if (key.includes('cisco')) {
+    bgColor = '#f0f9ff';
+    accentColor = '#0284c7';
+  } else if (key.includes('arch')) {
+    bgColor = '#f0fdf4';
+    accentColor = '#0f766e';
+  }
+
+  // Draw card background
+  ctx.fillStyle = bgColor;
+  ctx.fillRect(0, 0, 256, 256);
+
+  ctx.lineWidth = 8;
+  ctx.strokeStyle = accentColor;
+  ctx.strokeRect(6, 6, 244, 244);
+
+  ctx.save();
+  ctx.translate(128, 128);
+
+  if (key.includes('react')) {
+    // --- REACT ATOM LOGO ---
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = accentColor;
+    for (let i = 0; i < 3; i++) {
+      ctx.save();
+      ctx.rotate((i * Math.PI) / 3);
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 75, 28, 0, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+    ctx.fillStyle = accentColor;
+    ctx.beginPath();
+    ctx.arc(0, 0, 15, 0, Math.PI * 2);
+    ctx.fill();
+
+  } else if (key.includes('axum') || key.includes('rust')) {
+    // --- RUST / AXUM GEAR LOGO ---
+    ctx.lineWidth = 7;
+    ctx.strokeStyle = accentColor;
+    ctx.beginPath();
+    ctx.arc(0, 0, 58, 0, Math.PI * 2);
+    ctx.stroke();
+
+    const teeth = 12;
+    for (let i = 0; i < teeth; i++) {
+      ctx.save();
+      ctx.rotate((i * Math.PI * 2) / teeth);
+      ctx.fillStyle = accentColor;
+      ctx.fillRect(-7, -72, 14, 14);
+      ctx.restore();
+    }
+    ctx.fillStyle = '#14181a';
+    ctx.font = '700 34px "IBM Plex Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('AXUM', 0, 2);
+
+  } else if (key.includes('postgres') || key.includes('db') || key.includes('database')) {
+    // --- POSTGRES DB CYLINDERS ---
+    ctx.strokeStyle = accentColor;
+    ctx.lineWidth = 4;
+
+    for (let y = -45; y <= 45; y += 45) {
+      ctx.beginPath();
+      ctx.ellipse(0, y, 65, 22, 0, 0, Math.PI * 2);
+      ctx.fillStyle = y === 45 ? '#e0f2fe' : '#bae6fd';
+      ctx.fill();
+      ctx.stroke();
+    }
+    ctx.fillStyle = '#0369a1';
+    ctx.font = '700 22px "IBM Plex Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('PG-SQL', 0, 2);
+
+  } else if (key.includes('spring')) {
+    // --- SPRING BOOT LEAF LOGO ---
+    ctx.fillStyle = accentColor;
+    ctx.beginPath();
+    ctx.moveTo(0, -65);
+    ctx.bezierCurveTo(70, -30, 60, 60, 0, 70);
+    ctx.bezierCurveTo(-60, 60, -70, -30, 0, -65);
+    ctx.fill();
+    ctx.strokeStyle = '#052e16';
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+  } else if (key.includes('node') || key.includes('express')) {
+    // --- NODE.JS HEXAGON LOGO ---
+    ctx.fillStyle = accentColor;
+    ctx.beginPath();
+    const sides = 6;
+    const size = 65;
+    for (let i = 0; i < sides; i++) {
+      const angle = (i * Math.PI * 2) / sides - Math.PI / 6;
+      const x = Math.cos(angle) * size;
+      const y = Math.sin(angle) * size;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '700 40px "IBM Plex Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('JS', 0, 2);
+
+  } else if (key.includes('python')) {
+    // --- PYTHON LOGO ---
+    ctx.fillStyle = accentColor;
+    ctx.beginPath();
+    ctx.arc(-20, -20, 38, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#d97706';
+    ctx.beginPath();
+    ctx.arc(20, 20, 38, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '700 28px "IBM Plex Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('PY', 0, 0);
+
+  } else if (key.includes('docker')) {
+    // --- DOCKER WHALE LOGO ---
+    ctx.fillStyle = accentColor;
+    ctx.fillRect(-45, -28, 26, 22);
+    ctx.fillRect(-15, -28, 26, 22);
+    ctx.fillRect(15, -28, 26, 22);
+    ctx.fillRect(-15, -55, 26, 22);
+    ctx.beginPath();
+    ctx.arc(0, 20, 55, 0, Math.PI);
+    ctx.fill();
+
+  } else if (key.includes('java')) {
+    // --- JAVA LOGO ---
+    ctx.fillStyle = accentColor;
+    ctx.font = '48px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('☕', 0, -10);
+    ctx.fillStyle = '#14181a';
+    ctx.font = '700 22px "IBM Plex Mono", monospace';
+    ctx.fillText('JAVA', 0, 45);
+
+  } else if (key.includes('cisco')) {
+    // --- CISCO BARS ---
+    ctx.fillStyle = accentColor;
+    const bars = [-50, -25, 0, 25, 50];
+    const heights = [30, 60, 80, 60, 30];
+    bars.forEach((bx, idx) => {
+      ctx.fillRect(bx - 6, -heights[idx] / 2, 12, heights[idx]);
+    });
+
+  } else if (key.includes('arch')) {
+    // --- ARCH LINUX ARROW ---
+    ctx.fillStyle = accentColor;
+    ctx.beginPath();
+    ctx.moveTo(0, -65);
+    ctx.lineTo(60, 55);
+    ctx.lineTo(15, 30);
+    ctx.lineTo(0, 45);
+    ctx.lineTo(-15, 30);
+    ctx.lineTo(-60, 55);
+    ctx.closePath();
+    ctx.fill();
+
+  } else {
+    // --- GENERIC BADGE ---
+    ctx.fillStyle = accentColor;
+    ctx.font = '700 34px "IBM Plex Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(techIcon.toUpperCase().slice(0, 6), 0, 0);
+  }
+
+  ctx.restore();
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.minFilter = THREE.LinearFilter;
+  return texture;
+}
+
+// High-Contrast Solid Light Pill Sprite Generator with Dynamic Canvas Width (No Text Clipping)
 function makeLabelSprite(
   text: string,
-  color = '#e2e8f0',
-  bgColor = 'rgba(15, 23, 42, 0.85)',
-  borderColor = 'rgba(56, 189, 248, 0.3)'
+  color = '#0f172a',
+  bgColor = 'rgba(255, 255, 255, 0.98)',
+  borderColor = '#3f6b52'
 ): THREE.Sprite {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   if (!ctx) return new THREE.Sprite();
 
-  canvas.width = 512;
-  canvas.height = 128;
-  ctx.font = 'bold 34px "Inter", system-ui, -apple-system, sans-serif';
-
+  const fontSize = 34;
+  ctx.font = `700 ${fontSize}px "IBM Plex Mono", "Fira Code", monospace`;
   const textWidth = ctx.measureText(text).width;
-  const paddingX = 28;
-  const pillWidth = Math.max(textWidth + paddingX * 2, 180);
+
+  const paddingX = 30;
+  const pillWidth = Math.ceil(textWidth + paddingX * 2);
   const pillHeight = 64;
-  const x = (512 - pillWidth) / 2;
-  const y = (128 - pillHeight) / 2;
-  const radius = 18;
+
+  const canvasWidth = pillWidth + 24;
+  const canvasHeight = pillHeight + 24;
+
+  canvas.width = canvasWidth;
+  canvas.height = canvasHeight;
+
+  ctx.font = `700 ${fontSize}px "IBM Plex Mono", "Fira Code", monospace`;
+
+  const x = 12;
+  const y = 12;
+  const radius = 16;
 
   ctx.beginPath();
   if (typeof ctx.roundRect === 'function') {
@@ -427,20 +693,25 @@ function makeLabelSprite(
   }
   ctx.fillStyle = bgColor;
   ctx.fill();
-  ctx.lineWidth = 3;
+
+  ctx.lineWidth = 4;
   ctx.strokeStyle = borderColor;
   ctx.stroke();
 
   ctx.fillStyle = color;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(text, 256, 64);
+  ctx.fillText(text, canvasWidth / 2, canvasHeight / 2);
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.minFilter = THREE.LinearFilter;
   const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
   const sprite = new THREE.Sprite(material);
-  sprite.scale.set(2.8, 0.7, 1);
+
+  const aspect = canvasWidth / canvasHeight;
+  const spriteHeight = 0.65;
+  sprite.scale.set(spriteHeight * aspect, spriteHeight, 1);
+
   return sprite;
 }
 
@@ -448,11 +719,15 @@ const TopologyScene = () => {
   const mountRef = useRef<HTMLDivElement>(null);
   const [activePresetId, setActivePresetId] = useState<string>('all');
   const [selected, setSelected] = useState<SelectedPod | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
   const activePreset = PRESETS.find((p) => p.id === activePresetId) || PRESETS[0];
 
   const handleScrollToProject = (namespace?: string) => {
     if (!namespace) return;
+    if (isFullscreen) {
+      setIsFullscreen(false);
+    }
     const targetId = `project-${namespace.replace(/[^a-zA-Z0-9-]/g, '-')}`;
     const elem = document.getElementById(targetId);
     if (elem) {
@@ -461,33 +736,47 @@ const TopologyScene = () => {
   };
 
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isFullscreen) {
+        setIsFullscreen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isFullscreen]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 50);
+    return () => clearTimeout(timer);
+  }, [isFullscreen]);
+
+  useEffect(() => {
     if (!mountRef.current) return;
     const mount = mountRef.current;
     let width = mount.clientWidth || 600;
     let height = mount.clientHeight || 600;
 
-    // --- Scene ---
+    // --- Scene with Transparent Alpha ---
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x070a0f);
-    scene.fog = new THREE.FogExp2(0x070a0f, 0.035);
+    scene.background = null;
 
     const camera = new THREE.PerspectiveCamera(48, width / height, 0.1, 100);
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(width, height);
+    renderer.setClearColor(0x000000, 0);
     mount.appendChild(renderer.domElement);
 
     // --- Lights ---
-    scene.add(new THREE.AmbientLight(0xffffff, 0.45));
-    const mainLight = new THREE.DirectionalLight(0xffffff, 0.9);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.75));
+    const mainLight = new THREE.DirectionalLight(0xffffff, 0.95);
     mainLight.position.set(6, 12, 8);
     scene.add(mainLight);
-    const fillLight = new THREE.DirectionalLight(0x38bdf8, 0.4);
+    const fillLight = new THREE.DirectionalLight(0x3f6b52, 0.4);
     fillLight.position.set(-6, 4, -6);
     scene.add(fillLight);
-    const topGlow = new THREE.PointLight(0x10b981, 0.6, 25);
-    topGlow.position.set(0, 6, 0);
-    scene.add(topGlow);
 
     // --- Resize ---
     const handleResize = () => {
@@ -504,11 +793,11 @@ const TopologyScene = () => {
     const gridHelper = new THREE.GridHelper(30, 30, COLORS.gridAccent, COLORS.grid);
     gridHelper.position.y = -2.5;
     (gridHelper.material as THREE.Material).transparent = true;
-    (gridHelper.material as THREE.Material).opacity = 0.55;
+    (gridHelper.material as THREE.Material).opacity = 0.65;
     scene.add(gridHelper);
 
     // --- Floating particles ---
-    const particleCount = 150;
+    const particleCount = 130;
     const particleGeo = new THREE.BufferGeometry();
     const particlePositions = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount; i++) {
@@ -519,9 +808,9 @@ const TopologyScene = () => {
     particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
     const particleMat = new THREE.PointsMaterial({
       color: COLORS.particle,
-      size: 0.05,
+      size: 0.04,
       transparent: true,
-      opacity: 0.55,
+      opacity: 0.4,
     });
     const particles = new THREE.Points(particleGeo, particleMat);
     scene.add(particles);
@@ -533,14 +822,14 @@ const TopologyScene = () => {
     const clusterLineMat = new THREE.LineBasicMaterial({
       color: COLORS.cluster,
       transparent: true,
-      opacity: 0.35,
+      opacity: 0.4,
     });
     const clusterBox = new THREE.LineSegments(clusterEdges, clusterLineMat);
     clusterBox.position.set(0, 0.5, 0);
     scene.add(clusterBox);
 
     const clusterLabelText = activePreset.id === 'all' ? 'Cluster Kubernetes (11 Proyectos)' : `Namespace: ${activePreset.id}`;
-    const clusterLabel = makeLabelSprite(clusterLabelText, '#94a3b8', 'rgba(15,23,42,0.85)', 'rgba(148,163,184,0.3)');
+    const clusterLabel = makeLabelSprite(clusterLabelText, '#14181a', 'rgba(255,255,255,0.92)', 'rgba(185,192,180,0.8)');
     clusterLabel.position.set(0, 3.9, 0);
     scene.add(clusterLabel);
 
@@ -551,25 +840,23 @@ const TopologyScene = () => {
     const ingressGeo = new THREE.BoxGeometry(ingressWidth, ingressHeight, ingressDepth);
     const ingressMat = new THREE.MeshStandardMaterial({
       color: COLORS.ingress,
-      emissive: COLORS.ingress,
-      emissiveIntensity: 0.35,
-      metalness: 0.7,
-      roughness: 0.25,
+      metalness: 0.5,
+      roughness: 0.3,
     });
     const ingress = new THREE.Mesh(ingressGeo, ingressMat);
     ingress.position.set(0, 2.5, 0);
     scene.add(ingress);
 
     const ingressEdges = new THREE.EdgesGeometry(ingressGeo);
-    const ingressEdgeMat = new THREE.LineBasicMaterial({ color: COLORS.ingressGlow, transparent: true, opacity: 0.8 });
+    const ingressEdgeMat = new THREE.LineBasicMaterial({ color: COLORS.ingressGlow, transparent: true, opacity: 0.85 });
     ingress.add(new THREE.LineSegments(ingressEdges, ingressEdgeMat));
 
-    const ingressLabel = makeLabelSprite('ingress-nginx', '#fbbf24', 'rgba(30,27,75,0.9)', 'rgba(251,191,36,0.4)');
+    const ingressLabel = makeLabelSprite('ingress-nginx', '#d97706', 'rgba(255,251,235,0.95)', 'rgba(217,119,6,0.6)');
     ingressLabel.position.set(0, 3.3, 0);
     scene.add(ingressLabel);
 
     const ingressRingGeo = new THREE.TorusGeometry(0.75, 0.02, 12, 36);
-    const ingressRingMat = new THREE.MeshBasicMaterial({ color: COLORS.ingressGlow, transparent: true, opacity: 0.4 });
+    const ingressRingMat = new THREE.MeshBasicMaterial({ color: COLORS.ingressGlow, transparent: true, opacity: 0.45 });
     const ingressRing = new THREE.Mesh(ingressRingGeo, ingressRingMat);
     ingressRing.position.copy(ingress.position);
     ingressRing.rotation.x = Math.PI / 2;
@@ -603,9 +890,9 @@ const TopologyScene = () => {
       const nodeFillMat = new THREE.MeshStandardMaterial({
         color: COLORS.node,
         transparent: true,
-        opacity: 0.12,
-        roughness: 0.2,
-        metalness: 0.5,
+        opacity: 0.08,
+        roughness: 0.3,
+        metalness: 0.3,
         side: THREE.DoubleSide,
       });
       const nodeFill = new THREE.Mesh(nodeGeo, nodeFillMat);
@@ -616,7 +903,7 @@ const TopologyScene = () => {
       const platformMat = new THREE.MeshBasicMaterial({
         color: COLORS.nodeBorder,
         transparent: true,
-        opacity: 0.1,
+        opacity: 0.15,
         side: THREE.DoubleSide,
       });
       const platform = new THREE.Mesh(platformGeo, platformMat);
@@ -624,7 +911,50 @@ const TopologyScene = () => {
       platform.rotation.x = Math.PI / 2;
       scene.add(platform);
 
-      const nodeLabel = makeLabelSprite(node.name, '#60a5fa', 'rgba(15,23,42,0.9)', 'rgba(96,165,250,0.4)');
+      // --- Vertical Corner Pillars Connecting Node Box to Floor Grid ---
+      const halfW = nW / 2;
+      const halfD = nD / 2;
+      const bottomY = nodePos.y - nH / 2;
+      const floorY = -2.5;
+
+      const cornerX = [nodePos.x - halfW, nodePos.x + halfW];
+      const cornerZ = [nodePos.z - halfD, nodePos.z + halfD];
+
+      cornerX.forEach((cx) => {
+        cornerZ.forEach((cz) => {
+          const pillarPoints = [new THREE.Vector3(cx, bottomY, cz), new THREE.Vector3(cx, floorY, cz)];
+          const pillarGeo = new THREE.BufferGeometry().setFromPoints(pillarPoints);
+          const pillarMat = new THREE.LineBasicMaterial({
+            color: COLORS.nodeBorder,
+            transparent: true,
+            opacity: 0.8,
+          });
+          const pillar = new THREE.Line(pillarGeo, pillarMat);
+          scene.add(pillar);
+        });
+      });
+
+      // Ground Floor Anchor Plate under each Node
+      const floorBaseGeo = new THREE.PlaneGeometry(nW + 0.4, nD + 0.4);
+      const floorBaseMat = new THREE.MeshBasicMaterial({
+        color: COLORS.nodeBorder,
+        transparent: true,
+        opacity: 0.2,
+        side: THREE.DoubleSide,
+      });
+      const floorBase = new THREE.Mesh(floorBaseGeo, floorBaseMat);
+      floorBase.position.set(nodePos.x, floorY + 0.01, nodePos.z);
+      floorBase.rotation.x = Math.PI / 2;
+      scene.add(floorBase);
+
+      const floorEdges = new THREE.EdgesGeometry(floorBaseGeo);
+      const floorEdgeMat = new THREE.LineBasicMaterial({ color: COLORS.nodeBorder, transparent: true, opacity: 0.85 });
+      const floorOutline = new THREE.LineSegments(floorEdges, floorEdgeMat);
+      floorOutline.position.set(nodePos.x, floorY + 0.02, nodePos.z);
+      floorOutline.rotation.x = Math.PI / 2;
+      scene.add(floorOutline);
+
+      const nodeLabel = makeLabelSprite(node.name, '#0f172a', 'rgba(255,255,255,0.98)', '#3f6b52');
       nodeLabel.position.set(nodePos.x, nodePos.y + nH / 2 + 0.45, nodePos.z);
       scene.add(nodeLabel);
 
@@ -637,21 +967,30 @@ const TopologyScene = () => {
         const py = nodePos.y;
         const pz = nodePos.z;
 
-        const podGlassGeo = new THREE.BoxGeometry(0.75, 0.75, 0.75);
-        const podGlassMat = new THREE.MeshStandardMaterial({
+        const logoTexture = createTechLogoTexture(pod.techIcon || pod.name);
+
+        const podSideMat = new THREE.MeshStandardMaterial({
           color: COLORS.pod,
-          transparent: true,
-          opacity: 0.35,
-          roughness: 0.2,
-          metalness: 0.8,
+          roughness: 0.3,
+          metalness: 0.6,
         });
-        const podGlassMesh = new THREE.Mesh(podGlassGeo, podGlassMat);
+        const podLogoMat = new THREE.MeshStandardMaterial({
+          map: logoTexture,
+          roughness: 0.2,
+          metalness: 0.3,
+        });
+
+        const podMaterials = [podSideMat, podSideMat, podSideMat, podSideMat, podLogoMat, podLogoMat];
+
+        const podGlassGeo = new THREE.BoxGeometry(0.8, 0.8, 0.8);
+        const podGlassMesh = new THREE.Mesh(podGlassGeo, podMaterials);
         podGlassMesh.position.set(px, py, pz);
         podGlassMesh.userData = {
           name: pod.name,
           role: pod.role,
           info: pod.info,
           node: node.name,
+          techIcon: pod.techIcon || pod.name,
           namespace: pod.namespace,
           projectTitle: pod.projectTitle,
         };
@@ -659,27 +998,21 @@ const TopologyScene = () => {
         clickablePods.push(podGlassMesh);
 
         const podEdges = new THREE.EdgesGeometry(podGlassGeo);
-        const podEdgeMat = new THREE.LineBasicMaterial({ color: COLORS.podCore, transparent: true, opacity: 0.7 });
+        const podEdgeMat = new THREE.LineBasicMaterial({ color: COLORS.podCore, transparent: true, opacity: 0.8 });
         podGlassMesh.add(new THREE.LineSegments(podEdges, podEdgeMat));
 
-        const podCoreGeo = new THREE.BoxGeometry(0.45, 0.45, 0.45);
+        // Inner core cube
+        const podCoreGeo = new THREE.BoxGeometry(0.48, 0.48, 0.48);
         const podCoreMat = new THREE.MeshStandardMaterial({
-          color: COLORS.podCore,
-          emissive: COLORS.podCore,
-          emissiveIntensity: 0.4,
+          map: logoTexture,
           roughness: 0.1,
         });
         const podCoreMesh = new THREE.Mesh(podCoreGeo, podCoreMat);
         podGlassMesh.add(podCoreMesh);
         allPodCores.push(podCoreMesh);
 
-        const podGlow = new THREE.PointLight(COLORS.podCore, 0.3, 2.5);
-        podGlow.position.set(px, py, pz);
-        scene.add(podGlow);
-
-        const podLabel = makeLabelSprite(pod.name, '#6ee7b7', 'rgba(6,78,59,0.9)', 'rgba(52,211,153,0.4)');
-        podLabel.position.set(px, py - 0.75, pz);
-        podLabel.scale.set(1.4, 0.35, 1);
+        const podLabel = makeLabelSprite(pod.name, '#0f172a', 'rgba(255,255,255,0.98)', '#2d4d3b');
+        podLabel.position.set(px, py - 0.78, pz);
         scene.add(podLabel);
       });
     });
@@ -698,7 +1031,7 @@ const TopologyScene = () => {
       const trunkLineMat = new THREE.LineBasicMaterial({
         color: COLORS.trunkLine,
         transparent: true,
-        opacity: 0.75,
+        opacity: 0.7,
       });
       const trunkLine = new THREE.Line(lineGeo, trunkLineMat);
       scene.add(trunkLine);
@@ -861,21 +1194,30 @@ const TopologyScene = () => {
       transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] as const }}
       viewport={{ once: true, amount: 0.15 }}
     >
-      <div className="k8s-diagram-container">
+      <div className={`k8s-diagram-container ${isFullscreen ? 'fullscreen-mode' : ''}`}>
         {/* Preset Selector Bar */}
         <div className="k8s-preset-selector">
-          {PRESETS.map((preset) => (
-            <button
-              key={preset.id}
-              className={`k8s-preset-tab ${activePresetId === preset.id ? 'active' : ''}`}
-              onClick={() => {
-                setActivePresetId(preset.id);
-                setSelected(null);
-              }}
-            >
-              {preset.label}
-            </button>
-          ))}
+          <div className="k8s-preset-tabs">
+            {PRESETS.map((preset) => (
+              <button
+                key={preset.id}
+                className={`k8s-preset-tab ${activePresetId === preset.id ? 'active' : ''}`}
+                onClick={() => {
+                  setActivePresetId(preset.id);
+                  setSelected(null);
+                }}
+              >
+                {preset.label}
+              </button>
+            ))}
+          </div>
+          <button
+            className={`k8s-fullscreen-btn ${isFullscreen ? 'active' : ''}`}
+            onClick={() => setIsFullscreen(!isFullscreen)}
+            title={isFullscreen ? 'Salir de pantalla completa (Esc)' : 'Ampliar a pantalla completa'}
+          >
+            {isFullscreen ? '✕ Salir de Pantalla Completa' : '⛶ Pantalla Completa'}
+          </button>
         </div>
 
         <div className="k8s-layout">
