@@ -1,6 +1,5 @@
 use std::sync::Arc;
 
-use chrono::Utc;
 use uuid::Uuid;
 use tokio_postgres::{Client, Error};
 
