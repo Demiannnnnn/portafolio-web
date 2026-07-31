@@ -127,3 +127,40 @@ section {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* --- Project Category Filter Bar --- */
+.project-category-bar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.category-tab {
+  font-family: var(--mono, monospace);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--line, #D7DBD2);
+  background: var(--bg-panel, rgba(251, 251, 249, 0.8));
+  color: var(--muted, #5B6461);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(8px);
+}
+
+.category-tab:hover {
+  background: #ffffff;
+  border-color: var(--line-strong, #B9C0B4);
+  color: var(--ink, #14181A);
+  transform: translateY(-1px);
+}
+
+.category-tab.active {
+  background: var(--accent, #3F6B52);
+  border-color: var(--accent, #3F6B52);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(63, 107, 82, 0.25);
+}

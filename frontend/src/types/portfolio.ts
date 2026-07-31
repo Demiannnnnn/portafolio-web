@@ -13,17 +13,19 @@ export interface StackItem {
   detail: string;
 }
 
+export interface ProjectLink {
+  label: string;
+  href: string;
+}
+
 export interface Project {
   namespace: string;
   statusLabel: string;
   mediaPlaceholder: string;
+  image?: string;
   title: string;
   description: string;
   chips: string[];
   links: ProjectLink[];
-}
-
-export interface ProjectLink {
-  label: string;
-  href: string;
+  category?: 'DevOps & Cloud' | 'Sistemas Distribuidos' | 'Ciberseguridad & Rust' | 'Redes & Low-Level' | 'Full-Stack & Apps';
 }

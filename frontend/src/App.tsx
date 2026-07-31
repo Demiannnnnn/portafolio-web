@@ -1,10 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import BackgroundGlow from './components/BackgroundGlow/BackgroundGlow';
 import Header from './components/Header/Header';
 import HeroBento from './components/HeroBento/HeroBento';
 import TopologyScene from './components/TopologyScene/TopologyScene';
-import StackTable from './components/StackTable/StackTable';
 import ProjectCard from './components/ProjectCard/ProjectCard';
 import ContactSection from './components/ContactSection/ContactSection';
 import Footer from './components/Footer/Footer';
@@ -18,26 +17,37 @@ import type { Project } from './types/portfolio';
 const SESSION_STORAGE_KEY = 'portfolio.visitor.session_token';
 
 function detectVisitorMetadata(): VisitorPayload {
+  let browserName = 'Unknown Browser';
+  let browserVersion = '0';
+  let osName = 'Unknown OS';
+
   const userAgent = navigator.userAgent;
-  const platform = navigator.platform || undefined;
-  const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(userAgent);
+  const platform = navigator.platform;
 
-  const browserMatch = userAgent.match(
-    /(Firefox|Chrome|Edg|OPR|Safari)\/([\d.]+)/,
-  );
-  const browserName = browserMatch?.[1] ?? 'Unknown';
-  const browserVersion = browserMatch?.[2];
+  if (userAgent.includes('Firefox/')) {
+    browserName = 'Firefox';
+    browserVersion = userAgent.split('Firefox/')[1]?.split(' ')[0] ?? '0';
+  } else if (userAgent.includes('Edg/')) {
+    browserName = 'Edge';
+    browserVersion = userAgent.split('Edg/')[1]?.split(' ')[0] ?? '0';
+  } else if (userAgent.includes('Chrome/')) {
+    browserName = 'Chrome';
+    browserVersion = userAgent.split('Chrome/')[1]?.split(' ')[0] ?? '0';
+  } else if (userAgent.includes('Safari/')) {
+    browserName = 'Safari';
+    browserVersion = userAgent.split('Version/')[1]?.split(' ')[0] ?? '0';
+  }
 
-  let osName: string | undefined;
-  if (/Windows/i.test(userAgent)) {
+  const isMobile =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      userAgent,
+    );
+
+  if (userAgent.includes('Win')) {
     osName = 'Windows';
-  } else if (/Macintosh|Mac OS/i.test(userAgent)) {
+  } else if (userAgent.includes('Mac')) {
     osName = 'macOS';
-  } else if (/Android/i.test(userAgent)) {
-    osName = 'Android';
-  } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
-    osName = 'iOS';
-  } else if (/Linux/i.test(userAgent)) {
+  } else if (userAgent.includes('Linux')) {
     osName = 'Linux';
   }
 
@@ -52,131 +62,172 @@ function detectVisitorMetadata(): VisitorPayload {
 const projects: Project[] = [
   {
     namespace: 'security/axum-keylogger-api',
-    statusLabel: 'Controlled Env · Security',
-    mediaPlaceholder: '[Rust Axum Security Server]',
-    title: 'API de Ciberseguridad & Telemetría en Rust',
+    category: 'Ciberseguridad & Rust',
+    statusLabel: 'Controlled Env · EDR Agent',
+    mediaPlaceholder: '[Rust Axum EDR Security Server]',
+    title: 'Agente de Telemetría & Ciberseguridad Endpoint (Rust Axum)',
     description:
-      'API REST desarrollada en Rust utilizando el framework Axum. Diseñada para la recepción, análisis y procesamiento concurrente de eventos de telemetría y monitoreo de seguridad en entornos controlados.',
-    chips: ['Rust', 'Axum', 'Cybersecurity', 'REST API', 'Networking'],
+      'API REST de alta velocidad desarrollada en Rust Axum para la ingestión, análisis concurrente y monitoreo de eventos de seguridad y telemetría de endpoints en entornos de auditoría.',
+    chips: ['Rust', 'Axum', 'Cybersecurity', 'EDR Telemetry', 'REST API', 'Networking'],
     links: [
       { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/Api-Axum-Keylogger' },
     ],
   },
   {
     namespace: 'deployment/petcloud-adopcion',
-    statusLabel: 'Active · Production',
+    category: 'Full-Stack & Apps',
+    statusLabel: 'Active · Production Flagship',
     mediaPlaceholder: '[PetCloud Dashboard & QA]',
-    title: 'PetCloud — Plataforma de Adopción de Mascotas',
+    image: '/logos/petscloud/login.png',
+    title: 'PetCloud — Plataforma Web de Adopción de Mascotas & QA',
     description:
-      'Plataforma web completa para la gestión y adopción de mascotas. Lideré el aseguramiento de calidad (QA) diseñando y ejecutando suites de pruebas E2E con Cypress, validando endpoints y fiabilidad del dashboard.',
-    chips: ['React', 'JavaScript', 'Spring Boot', 'Cypress', 'QA & E2E'],
+      'Plataforma web completa para la gestión y adopción de mascotas. Lideré el aseguramiento de calidad (QA) diseñando y ejecutando suites de pruebas E2E con Cypress, validando endpoints REST y dashboard.',
+    chips: ['React', 'Spring Boot', 'PostgreSQL', 'Cypress', 'QA & E2E', 'Docker'],
     links: [
       { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/Constr-Proy_fork' },
     ],
   },
   {
     namespace: 'deployment/causas-judiciales-docker',
-    statusLabel: 'Multi-Container · Docker',
+    category: 'DevOps & Cloud',
+    statusLabel: 'Multi-Container · 20+ Services',
     mediaPlaceholder: '[Judicial System Docker Infra]',
-    title: 'Sistema de Procesamiento de Causas Judiciales',
+    title: 'Sistema de Procesamiento de Causas Judiciales (20+ Contenedores)',
     description:
-      'Sistema para la gestión y procesamiento de causas judiciales desplegado sobre una infraestructura avanzada multinodo mediante contenedores Docker y scripts de orquestación.',
-    chips: ['Docker', 'Shell', 'Sistemas Distribuidos', 'Infraestructura'],
+      'Infraestructura empresarial distribuida sobre contenedores Docker Compose con más de 20 servicios interconectados: Master/Slave DB replication, API Gateways, tareas programadas Cron y módulos IA.',
+    chips: ['Docker Compose', 'Master/Slave DB', 'API Gateway', 'Orquestación', 'Microservicios'],
     links: [
       { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/Licitacion_SistemaCausasJudiciales_fork' },
     ],
   },
   {
-    namespace: 'ml/dermatology-naive-bayes',
-    statusLabel: 'Trained Model · UCI Dataset',
-    mediaPlaceholder: '[Machine Learning Plot]',
-    title: 'Clasificador IA de Enfermedades Dermatológicas',
+    namespace: 'event-driven/kafka-prometheus-observability',
+    category: 'DevOps & Cloud',
+    statusLabel: 'Architecture Spec · Roadmap',
+    mediaPlaceholder: '[Kafka & Grafana Observability Architecture]',
+    title: 'Sistema Event-Driven con Apache Kafka, Prometheus & Grafana',
     description:
-      'Proyecto de Machine Learning para la clasificación automatizada de 6 tipos de patologías dermatológicas usando el algoritmo Naive Bayes. Entrenado sobre el dataset UCI Dermatology (366 instancias, 34 características clínicas).',
-    chips: ['Python', 'Machine Learning', 'Naive Bayes', 'Data Science'],
+      'Proyecto estratégico de microservicios desacoplados para procesamiento de eventos en tiempo real mediante Apache Kafka / RabbitMQ, ingestión de métricas Prometheus y tableros de observabilidad en Grafana.',
+    chips: ['Kafka', 'Event-Driven', 'Prometheus', 'Grafana', 'Observabilidad', 'Microservicios'],
     links: [
-      { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/IA-Dermatology' },
-    ],
-  },
-  {
-    namespace: 'deployment/facturacion-inventario',
-    statusLabel: 'Active · Business System',
-    mediaPlaceholder: '[Billing & Stock System]',
-    title: 'Sistema de Facturación e Inventario Digital',
-    description:
-      'Software de gestión comercial diseñado para empresas de escala mediana. Proporciona control de inventarios automatizado y emisión de facturación digital en tiempo real.',
-    chips: ['JavaScript', 'Node.js', 'REST API', 'Gestión Comercial'],
-    links: [
-      { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/Sistema-facturaje-inventario' },
+      { label: 'Ver Especificación en GitHub', href: 'https://github.com/Demiannnnnn' },
     ],
   },
   {
     namespace: 'distributed/tickets-middleware',
-    statusLabel: 'Running · Middleware',
+    category: 'Sistemas Distribuidos',
+    statusLabel: 'Running · Polyglot Middleware',
     mediaPlaceholder: '[Distributed Middleware]',
-    title: 'Simulador de Venta de Tickets Distribuidos',
+    title: 'Simulador de Venta de Tickets & Middleware Políglota',
     description:
-      'Sistema distribuido compuesto por 3 aplicaciones independientes conectadas a través de un middleware de comunicación customizado, orquestado completamente en Docker.',
-    chips: ['Sistemas Distribuidos', 'Docker', 'Middleware', 'JavaScript'],
+      'Sistema distribuido compuesto por 3 aplicaciones independientes conectadas mediante un bus de comunicación customizado (middleware en Flask, Go y Node.js) orquestado completamente en Docker.',
+    chips: ['Sistemas Distribuidos', 'Go', 'Flask', 'Node.js', 'Docker', 'Middleware'],
     links: [
       { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/Proy3_SD_fork' },
     ],
   },
   {
-    namespace: 'backend/api-contabilidad',
-    statusLabel: 'REST Service · Active',
-    mediaPlaceholder: '[Accounting API Server]',
-    title: 'API REST de Contabilidad & Clientes',
+    namespace: 'deployment/facturacion-inventario',
+    category: 'Full-Stack & Apps',
+    statusLabel: 'Active · Business System',
+    mediaPlaceholder: '[Billing & Stock System]',
+    title: 'Sistema de Facturación Digital e Inventarios',
     description:
-      'Servidor backend propio para la gestión contable, administración de registros de clientes y control de operaciones financieras.',
-    chips: ['JavaScript', 'Node.js', 'Express', 'REST API'],
+      'Software de gestión comercial diseñado para empresas de escala mediana. Proporciona control de inventarios automatizado y emisión de facturación digital en tiempo real mediante API REST propia.',
+    chips: ['Node.js', 'JavaScript', 'REST API', 'Facturación Digital', 'Gestión Comercial'],
     links: [
-      { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/Server-Sistema-Contabiliadad-Clientes' },
-    ],
-  },
-  {
-    namespace: 'distributed/combustible-gasolinera',
-    statusLabel: 'Distributed System · Concurrency',
-    mediaPlaceholder: '[Gas Station Monitor]',
-    title: 'Sistema Distribuido de Abastecimiento de Combustible',
-    description:
-      'Aplicación distribuida para estaciones de servicio que gestiona concurrentemente la distribución de gasolina, precios y control de stock entre nodos interconectados.',
-    chips: ['JavaScript', 'Sistemas Distribuidos', 'Concurrencia', 'Node.js'],
-    links: [
-      { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/sistema-combustible-distribuido' },
-    ],
-  },
-  {
-    namespace: 'compute/image-parallel-processing',
-    statusLabel: 'Benchmarked · Java Multithreading',
-    mediaPlaceholder: '[Parallel Image Filter Output]',
-    title: 'Procesamiento y Filtrado Paralelo de Imágenes',
-    description:
-      'Algoritmo desarrollado en Java para la reducción de ruido en imágenes digitales mediante programación en paralelo y secuencial, comparando aceleración y uso de CPU entre hilos.',
-    chips: ['Java', 'Parallel Programming', 'Multithreading', 'Algoritmos'],
-    links: [
-      { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/ProyectoSistemasDistribuidos_fork' },
+      { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/Sistema-facturaje-inventario' },
+      { label: 'Ver Server API', href: 'https://github.com/Demiannnnnn/Server-Sistema-Contabiliadad-Clientes' },
     ],
   },
   {
     namespace: 'network/cisco-packet-tracer',
+    category: 'Redes & Low-Level',
     statusLabel: 'Configured · Packet Tracer',
     mediaPlaceholder: '[Cisco Network Infrastructure]',
-    title: 'Diseño e Infraestructura de Redes Cisco',
+    title: 'Diseño e Infraestructura de Redes Empresariales Cisco',
     description:
-      'Proyecto completo de diseño de red de comunicaciones en Cisco Packet Tracer. Incluye enrutamiento dinámico, segmentación VLAN y políticas de seguridad.',
-    chips: ['Packet Tracer', 'Networking', 'VLANs', 'Routing & Switching'],
+      'Proyecto completo de diseño de red de comunicaciones en Cisco Packet Tracer. Incluye enrutamiento dinámico (OSPF, RIP), enrutamiento estático, segmentación VLAN, telefonía IP (VoIP) y servidores HTTPS.',
+    chips: ['Cisco Packet Tracer', 'OSPF', 'VLANs', 'VoIP', 'Routing & Switching', 'Subnetting'],
     links: [
       { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/Proyecto_Redes_2' },
     ],
   },
   {
+    namespace: 'compute/image-parallel-processing',
+    category: 'Redes & Low-Level',
+    statusLabel: 'Benchmarked · High Performance',
+    mediaPlaceholder: '[Parallel Image Filter Output]',
+    title: 'Procesamiento Concurrente y Filtros Paralelos de Imágenes (C / Java)',
+    description:
+      'Algoritmos de procesamiento de imágenes digitales y reducción de ruido desarrollados en C y Java mediante hilos de ejecución paralela (POSIX Threads), midiendo aceleración Speedup y uso de CPU.',
+    chips: ['C', 'Java', 'Parallel Computing', 'POSIX Threads', 'Multithreading', 'HPC'],
+    links: [
+      { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/ProyectoSistemasDistribuidos_fork' },
+      { label: 'Ver Repositorio Hilos C', href: 'https://github.com/Demiannnnnn/ProyectoHilos_fork' },
+    ],
+  },
+  {
+    namespace: 'os/process-scheduling-simulator',
+    category: 'Redes & Low-Level',
+    statusLabel: 'CS Fundamentals · Simulator',
+    mediaPlaceholder: '[OS Scheduler Simulator]',
+    title: 'Simulador de Planificación de Procesos de SO (Round Robin / FIFO)',
+    description:
+      'Aplicación interactiva desarrollada en JavaFX que simula la gestión de procesos del sistema operativo evaluando algoritmos Round Robin, FIFO, SJF y prioridades de ejecución de CPU.',
+    chips: ['Java', 'JavaFX', 'Sistemas Operativos', 'Round Robin', 'CPU Scheduling'],
+    links: [
+      { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/ProyectoSOU3_fork' },
+    ],
+  },
+  {
+    namespace: 'java/gof-design-patterns-trex',
+    category: 'Full-Stack & Apps',
+    statusLabel: 'Architecture · GoF Patterns',
+    mediaPlaceholder: '[GoF Design Patterns T-Rex]',
+    title: 'Implementación de Patrones de Diseño GoF en Java (T-Rex Game)',
+    description:
+      'Proyecto desarrollado en Java enfocado en la aplicación rigurosa de Patrones de Diseño GoF (State, Observer, Factory, Strategy, Singleton) para la arquitectura de lógica de videojuegos y animaciones.',
+    chips: ['Java', 'Design Patterns', 'GoF', 'State Pattern', 'Clean Code'],
+    links: [
+      { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/Trex_Project' },
+      { label: 'Ver Juego JavaFX', href: 'https://github.com/Demiannnnnn/ProyectoU3_fork' },
+    ],
+  },
+  {
+    namespace: 'ml/dermatology-naive-bayes',
+    category: 'Full-Stack & Apps',
+    statusLabel: 'Trained Model · UCI Dataset',
+    mediaPlaceholder: '[Machine Learning Plot]',
+    title: 'Clasificador IA de Enfermedades Dermatológicas (Python)',
+    description:
+      'Modelo de Machine Learning para la clasificación automatizada de 6 tipos de patologías dermatológicas aplicando el algoritmo Naive Bayes sobre el dataset UCI Dermatology (366 instancias, 34 características).',
+    chips: ['Python', 'Machine Learning', 'Naive Bayes', 'Data Science', 'UCI Dataset'],
+    links: [
+      { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/IA-Dermatology' },
+    ],
+  },
+  {
+    namespace: 'distributed/combustible-gasolinera',
+    category: 'Sistemas Distribuidos',
+    statusLabel: 'Fault Tolerant · WebSockets',
+    mediaPlaceholder: '[Gas Station Monitor]',
+    title: 'Sistema Distribuido Resiliente de Abastecimiento de Combustible',
+    description:
+      'Aplicación distribuida para estaciones de servicio desarrollada en Node.js y WebSockets. Gestiona concurrentemente el stock de gasolina con mecanismos de tolerancia a fallos y auto-despliegue.',
+    chips: ['Node.js', 'WebSockets', 'Sistemas Distribuidos', 'Concurrencia', 'Resiliencia'],
+    links: [
+      { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/sistema-combustible-distribuido' },
+    ],
+  },
+  {
     namespace: 'dotfiles/arch-hyprland',
+    category: 'Redes & Low-Level',
     statusLabel: 'Daily Driver · Config',
     mediaPlaceholder: '[Arch Linux Hyprland Setup]',
-    title: 'Arch Linux & Hyprland Custom Environment',
+    title: 'Arch Linux & Hyprland Custom Environment (Dotfiles)',
     description:
-      'Dotfiles y scripts de configuración para entorno de escritorio en Arch Linux utilizando el compositor Wayland Hyprland, barra de estado y atajos personalizados.',
+      'Scripts de automatización y dotfiles para el entorno de trabajo personal en Arch Linux con compositor Wayland Hyprland, barra de estado Waybar y atajos personalizados.',
     chips: ['Arch Linux', 'Hyprland', 'Wayland', 'Bash', 'Dotfiles'],
     links: [
       { label: 'Ver Repositorio', href: 'https://github.com/Demiannnnnn/config-arch' },
@@ -184,9 +235,25 @@ const projects: Project[] = [
   },
 ];
 
+const CATEGORIES = [
+  'Todos',
+  'DevOps & Cloud',
+  'Sistemas Distribuidos',
+  'Ciberseguridad & Rust',
+  'Redes & Low-Level',
+  'Full-Stack & Apps',
+] as const;
+
 const appleEase = [0.25, 0.46, 0.45, 0.94] as const;
 
 function App() {
+  const [selectedCategory, setSelectedCategory] = useState<string>('Todos');
+
+  const filteredProjects =
+    selectedCategory === 'Todos'
+      ? projects
+      : projects.filter((p) => p.category === selectedCategory);
+
   // Background visitor tracking (silent)
   useEffect(() => {
     let cancelled = false;
@@ -250,17 +317,32 @@ function App() {
 
       {/* SECCIÓN 3: MIS PROYECTOS */}
       <section id="proyectos" className="section-spacing">
-        <motion.div
-          className="eyebrow"
-          initial={{ opacity: 0, x: -30, filter: 'blur(6px)' }}
-          whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, ease: appleEase }}
-        >
-          DESPLIEGUES & PROYECTOS ({projects.length})
-        </motion.div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 32 }}>
+          <motion.div
+            className="eyebrow"
+            initial={{ opacity: 0, x: -30, filter: 'blur(6px)' }}
+            whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: appleEase }}
+          >
+            DESPLIEGUES & PROYECTOS ({filteredProjects.length})
+          </motion.div>
 
-        {projects.map((project) => (
+          {/* Categoría Selector Bar */}
+          <div className="project-category-bar">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                className={`category-tab ${selectedCategory === cat ? 'active' : ''}`}
+                onClick={() => setSelectedCategory(cat)}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {filteredProjects.map((project) => (
           <ProjectCard key={project.namespace} project={project} />
         ))}
       </section>
