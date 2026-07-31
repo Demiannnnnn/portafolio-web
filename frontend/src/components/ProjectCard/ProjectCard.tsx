@@ -8,12 +8,12 @@ interface ProjectCardProps {
 
 const ProjectCard = ({ project }: ProjectCardProps) => {
   return (
-    <motion.div 
+    <motion.div
       id={`project-${project.namespace.replace(/[^a-zA-Z0-9-]/g, '-')}`}
       className="deploy"
-      initial={{ opacity: 0, y: 80 }} 
-      whileInView={{ opacity: 1, y: 0 }} 
-      viewport={{ once: true, amount: 0.15 }} 
+      initial={{ opacity: 0, y: 80 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
       whileHover={{ y: -8, transition: { duration: 0.3 } }}
     >
@@ -25,7 +25,13 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
         </span>
       </div>
       <div className="deploy-body">
-        <div className="deploy-media">{project.mediaPlaceholder}</div>
+        <div className="deploy-media">
+          {project.image ? (
+            <img src={project.image} alt={project.title} className="deploy-img" />
+          ) : (
+            project.mediaPlaceholder
+          )}
+        </div>
         <div>
           <h3>{project.title}</h3>
           <p>{project.description}</p>
