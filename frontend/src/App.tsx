@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import BackgroundGlow from './components/BackgroundGlow/BackgroundGlow';
 import Header from './components/Header/Header';
@@ -248,11 +248,43 @@ const appleEase = [0.25, 0.46, 0.45, 0.94] as const;
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState<string>('Todos');
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const filteredProjects =
     selectedCategory === 'Todos'
       ? projects
       : projects.filter((p) => p.category === selectedCategory);
+
+  // Block zoom (Ctrl+wheel & pinch)
+  useEffect(() => {
+    const preventZoom = (e: WheelEvent) => {
+      if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+      }
+    };
+    const preventGestureZoom = (e: Event) => {
+      e.preventDefault();
+    };
+    const preventKeyZoom = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '=')) {
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener('wheel', preventZoom, { passive: false });
+    document.addEventListener('gesturestart', preventGestureZoom);
+    document.addEventListener('gesturechange', preventGestureZoom);
+    document.addEventListener('gestureend', preventGestureZoom);
+    document.addEventListener('keydown', preventKeyZoom);
+
+    return () => {
+      document.removeEventListener('wheel', preventZoom);
+      document.removeEventListener('gesturestart', preventGestureZoom);
+      document.removeEventListener('gesturechange', preventGestureZoom);
+      document.removeEventListener('gestureend', preventGestureZoom);
+      document.removeEventListener('keydown', preventKeyZoom);
+    };
+  }, []);
 
   // Background visitor tracking (silent)
   useEffect(() => {
@@ -294,61 +326,71 @@ function App() {
   return (
     <>
       <BackgroundGlow />
-      <Header />
+      <Header scrollContainerRef={scrollContainerRef} />
 
-      {/* SECCIÓN 1: INICIAL & HABILIDADES */}
-      <div id="inicial">
-        <HeroBento />
-      </div>
-
-      {/* SECCIÓN 2: EL GRÁFICO (TOPOLOGÍA 3D & STACK) */}
-      <section id="grafico" className="section-spacing">
-        <motion.div
-          className="eyebrow"
-          initial={{ opacity: 0, x: -30, filter: 'blur(6px)' }}
-          whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, ease: appleEase }}
-        >
-          INFRAESTRUCTURA KUBERNETES & ENTORNO 3D
-        </motion.div>
-        <TopologyScene />
-      </section>
-
-      {/* SECCIÓN 3: MIS PROYECTOS */}
-      <section id="proyectos" className="section-spacing">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 32 }}>
-          <motion.div
-            className="eyebrow"
-            initial={{ opacity: 0, x: -30, filter: 'blur(6px)' }}
-            whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6, ease: appleEase }}
-          >
-            DESPLIEGUES & PROYECTOS ({filteredProjects.length})
-          </motion.div>
-
-          {/* Categoría Selector Bar */}
-          <div className="project-category-bar">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                className={`category-tab ${selectedCategory === cat ? 'active' : ''}`}
-                onClick={() => setSelectedCategory(cat)}
-              >
-                {cat}
-              </button>
-            ))}
+      <div className="scroll-snap-container" ref={scrollContainerRef}>
+        {/* SECCIÓN 1: INICIAL & HABILIDADES */}
+        <section className="snap-section" id="inicial">
+          <div className="snap-section-inner">
+            <HeroBento />
           </div>
-        </div>
+        </section>
 
-        <ProjectSlider projects={filteredProjects} />
-      </section>
+        {/* SECCIÓN 2: EL GRÁFICO (TOPOLOGÍA 3D & STACK) */}
+        <section className="snap-section" id="grafico">
+          <div className="snap-section-inner snap-section-padded">
+            <motion.div
+              className="eyebrow"
+              initial={{ opacity: 0, x: -30, filter: 'blur(6px)' }}
+              whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, ease: appleEase }}
+            >
+              INFRAESTRUCTURA KUBERNETES & ENTORNO 3D
+            </motion.div>
+            <TopologyScene />
+          </div>
+        </section>
 
-      {/* SECCIÓN 4: EL CONTACTO & FOOTER */}
-      <div id="contacto">
-        <ContactSection />
-        <Footer />
+        {/* SECCIÓN 3: MIS PROYECTOS */}
+        <section className="snap-section" id="proyectos">
+          <div className="snap-section-inner snap-section-padded">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 20 }}>
+              <motion.div
+                className="eyebrow"
+                initial={{ opacity: 0, x: -30, filter: 'blur(6px)' }}
+                whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.6, ease: appleEase }}
+              >
+                DESPLIEGUES & PROYECTOS ({filteredProjects.length})
+              </motion.div>
+
+              {/* Categoría Selector Bar */}
+              <div className="project-category-bar">
+                {CATEGORIES.map((cat) => (
+                  <button
+                    key={cat}
+                    className={`category-tab ${selectedCategory === cat ? 'active' : ''}`}
+                    onClick={() => setSelectedCategory(cat)}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <ProjectSlider projects={filteredProjects} />
+          </div>
+        </section>
+
+        {/* SECCIÓN 4: EL CONTACTO & FOOTER */}
+        <section className="snap-section" id="contacto">
+          <div className="snap-section-inner">
+            <ContactSection />
+            <Footer />
+          </div>
+        </section>
       </div>
     </>
   );
