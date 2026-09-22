@@ -4,7 +4,7 @@ import BackgroundGlow from './components/BackgroundGlow/BackgroundGlow';
 import Header from './components/Header/Header';
 import HeroBento from './components/HeroBento/HeroBento';
 import TopologyScene from './components/TopologyScene/TopologyScene';
-import ProjectCard from './components/ProjectCard/ProjectCard';
+import ProjectSlider from './components/ProjectSlider/ProjectSlider';
 import ContactSection from './components/ContactSection/ContactSection';
 import Footer from './components/Footer/Footer';
 import {
@@ -342,9 +342,7 @@ function App() {
           </div>
         </div>
 
-        {filteredProjects.map((project) => (
-          <ProjectCard key={project.namespace} project={project} />
-        ))}
+        <ProjectSlider projects={filteredProjects} />
       </section>
 
       {/* SECCIÓN 4: EL CONTACTO & FOOTER */}

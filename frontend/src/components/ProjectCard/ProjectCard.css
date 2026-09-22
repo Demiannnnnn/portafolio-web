@@ -1,10 +1,18 @@
+/* ================================================================
+   PROJECT CARD — Vertical Layout (Redesigned)
+   Matches reference: header bar → image → title → desc → chips → links
+   ================================================================ */
+
 .deploy {
   border: 1px solid var(--line);
   background: var(--bg-panel);
   margin-bottom: 32px;
   border-radius: 20px;
   backdrop-filter: blur(10px);
-  transition: transform 0.4s cubic-bezier(0.2,0.8,0.2,1), box-shadow 0.4s ease, border-color 0.4s ease;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.2,0.8,0.2,1),
+              box-shadow 0.4s ease,
+              border-color 0.4s ease;
 }
 
 .deploy:hover {
@@ -13,106 +21,124 @@
   border-color: var(--line-strong);
 }
 
+/* ---- Top Header Bar ---- */
 .deploy-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 32px;
+  padding: 16px 28px;
   border-bottom: 1px solid var(--line);
   font-family: var(--mono);
   font-size: 12.5px;
   color: var(--muted);
   background: rgba(255,255,255,0.4);
-  border-radius: 20px 20px 0 0;
 }
 
 .deploy-head .ns {
   color: var(--ink);
   font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 55%;
 }
 
-.deploy-head .pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.deploy-head .status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-}
-
-.deploy-body {
-  padding: 32px;
-  display: grid;
-  grid-template-columns: 1fr 1.5fr;
-  gap: 40px;
-  align-items: center;
-}
-
-@media (max-width:800px) {
-  .deploy-body {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-}
-
-.deploy-media {
-  background: repeating-linear-gradient(135deg, #E6E9E1, #E6E9E1 4px, #EFF1EC 4px, #EFF1EC 8px);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  aspect-ratio: 4/3;
+.deploy-head-labels {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.head-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-family: var(--mono);
-  font-size: 12px;
-  color: var(--faint);
-  text-align: center;
+  font-size: 11.5px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* ---- Full-Width Image Area ---- */
+.deploy-media {
+  width: 100%;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
+  background: linear-gradient(145deg, #E6E9E1, #DDE0D8);
+  border-bottom: 1px solid var(--line);
+  position: relative;
 }
 
 .deploy-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 11px;
   display: block;
 }
 
+.deploy-media-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--faint);
+  text-align: center;
+  padding: 20px;
+  background: repeating-linear-gradient(
+    135deg,
+    #E6E9E1,
+    #E6E9E1 4px,
+    #EFF1EC 4px,
+    #EFF1EC 8px
+  );
+}
+
+/* ---- Body Content (Below Image) ---- */
+.deploy-body {
+  padding: 28px 32px 32px;
+}
+
 .deploy-body h3 {
-  font-size: 1.6rem;
-  margin-bottom: 12px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1.3rem, 2.5vw, 1.6rem);
   letter-spacing: -0.02em;
+  margin-bottom: 12px;
+  color: var(--ink);
 }
 
 .deploy-body p {
   color: var(--muted);
-  font-size: 15px;
-  margin-bottom: 24px;
+  font-size: 14.5px;
+  margin-bottom: 20px;
   line-height: 1.7;
 }
 
+/* ---- Tech Chips ---- */
 .chips {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .chip {
   font-family: var(--mono);
   font-size: 11px;
-  padding: 6px 14px;
+  padding: 5px 14px;
   border: 1px solid var(--line-strong);
   color: var(--ink);
   border-radius: 30px;
   font-weight: 500;
   background: rgba(255,255,255,0.6);
+  white-space: nowrap;
 }
 
+/* ---- Links ---- */
 .deploy-links {
   display: flex;
   gap: 24px;
@@ -123,10 +149,10 @@
 
 .deploy-links a {
   color: var(--ink);
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
-  transition: color 0.2s;
+  transition: color 0.2s ease;
   text-decoration: none;
 }
 
@@ -134,12 +160,33 @@
   color: var(--accent);
 }
 
-.deploy-links a svg {
-  width: 14px;
-  height: 14px;
-  transition: transform 0.2s;
+.link-arrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+  font-size: 14px;
 }
 
-.deploy-links a:hover svg {
-  transform: translate(3px, -3px);
+.deploy-links a:hover .link-arrow {
+  transform: translateX(4px);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 800px) {
+  .deploy-head {
+    padding: 14px 20px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .deploy-head .ns {
+    max-width: 100%;
+  }
+
+  .deploy-body {
+    padding: 20px 20px 24px;
+  }
+
+  .deploy-body h3 {
+    font-size: 1.2rem;
+  }
 }
