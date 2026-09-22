@@ -29,6 +29,8 @@
 
 html {
   scroll-behavior: smooth;
+  overflow: hidden;
+  height: 100%;
 }
 
 body {
@@ -38,9 +40,59 @@ body {
   font-size: 16px;
   line-height: 1.6;
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden;
+  height: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  touch-action: pan-y;
+  -ms-touch-action: pan-y;
+}
+
+#root {
+  height: 100%;
+}
+
+/* --- Scroll Snap Container --- */
+.scroll-snap-container {
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* --- Individual Snap Sections --- */
+.snap-section {
+  scroll-snap-align: start;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.snap-section-inner {
+  width: 100%;
+  max-width: 1560px;
+  margin: 0 auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.snap-section-padded {
+  padding: 80px 60px 40px;
+}
+
+@media (max-width: 700px) {
+  .snap-section-padded {
+    padding: 70px 24px 30px;
+  }
 }
 
 /* --- Selection --- */
@@ -56,22 +108,9 @@ a {
   transition: color 0.2s;
 }
 
-/* --- Section Container --- */
-section {
-  max-width: 1560px;
-  margin: 0 auto;
-  padding: 0 60px;
-}
-
-@media (max-width: 700px) {
-  section {
-    padding: 0 24px;
-  }
-}
-
-/* --- Section Spacing --- */
+/* --- Section Spacing (legacy, kept for compatibility) --- */
 .section-spacing {
-  margin-top: 120px;
+  margin-top: 0;
 }
 
 /* --- Eyebrow Label --- */

@@ -3,8 +3,12 @@
    ================================================================ */
 
 .contact-wrap {
-  padding: 100px 44px 120px;
+  padding: 60px 44px 40px;
   text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .contact-container {
