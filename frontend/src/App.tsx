@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import BackgroundGlow from './components/BackgroundGlow/BackgroundGlow';
+import ParticlesBackground from './components/ParticlesBackground/ParticlesBackground';
 import Header from './components/Header/Header';
 import HeroBento from './components/HeroBento/HeroBento';
 import TopologyScene from './components/TopologyScene/TopologyScene';
@@ -324,6 +325,7 @@ function App() {
   return (
     <>
       <BackgroundGlow />
+      <ParticlesBackground />
       <Header scrollContainerRef={scrollContainerRef} />
 
       <div className="scroll-snap-container" ref={scrollContainerRef}>
