@@ -145,6 +145,7 @@ const projects: Project[] = [
     category: 'Redes & Low-Level',
     statusLabel: 'Configured · Packet Tracer',
     mediaPlaceholder: '[Cisco Network Infrastructure]',
+    image: '/logos/Proyecto_redes.png',
     title: 'Diseño e Infraestructura de Redes Empresariales Cisco',
     description:
       'Proyecto completo de diseño de red de comunicaciones en Cisco Packet Tracer. Incluye enrutamiento dinámico (OSPF, RIP), enrutamiento estático, segmentación VLAN, telefonía IP (VoIP) y servidores HTTPS.',
