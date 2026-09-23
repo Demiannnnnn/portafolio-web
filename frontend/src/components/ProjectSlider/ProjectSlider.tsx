@@ -64,37 +64,7 @@ const ProjectSlider = ({ projects }: ProjectSliderProps) => {
 
   return (
     <div className="slider-wrapper">
-      {/* Header controls */}
-      <div className="slider-controls-head">
-        <div className="slider-counter">
-          <span className="current-num">
-            {String(currentIndex + 1).padStart(2, '0')}
-          </span>
-          <span className="counter-slash">/</span>
-          <span className="total-num">
-            {String(projects.length).padStart(2, '0')}
-          </span>
-        </div>
-
-        <div className="slider-arrows">
-          <button
-            type="button"
-            className="arrow-btn"
-            onClick={handlePrev}
-            aria-label="Proyecto anterior"
-          >
-            ←
-          </button>
-          <button
-            type="button"
-            className="arrow-btn"
-            onClick={handleNext}
-            aria-label="Proyecto siguiente"
-          >
-            →
-          </button>
-        </div>
-      </div>
+      {/* Navigation arrows removed — use dots or keyboard */}
 
       {/* 3D Carousel Track */}
       <div className="carousel-viewport">

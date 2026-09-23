@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from 'react';
-import { motion } from 'framer-motion';
 import BackgroundGlow from './components/BackgroundGlow/BackgroundGlow';
 import Header from './components/Header/Header';
 import HeroBento from './components/HeroBento/HeroBento';
@@ -244,7 +243,6 @@ const CATEGORIES = [
   'Full-Stack & Apps',
 ] as const;
 
-const appleEase = [0.25, 0.46, 0.45, 0.94] as const;
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState<string>('Todos');
@@ -339,15 +337,6 @@ function App() {
         {/* SECCIÓN 2: EL GRÁFICO (TOPOLOGÍA 3D & STACK) */}
         <section className="snap-section" id="grafico">
           <div className="snap-section-inner snap-section-padded">
-            <motion.div
-              className="eyebrow"
-              initial={{ opacity: 0, x: -30, filter: 'blur(6px)' }}
-              whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.6, ease: appleEase }}
-            >
-              INFRAESTRUCTURA KUBERNETES & ENTORNO 3D
-            </motion.div>
             <TopologyScene />
           </div>
         </section>
@@ -355,17 +344,7 @@ function App() {
         {/* SECCIÓN 3: MIS PROYECTOS */}
         <section className="snap-section" id="proyectos">
           <div className="snap-section-inner snap-section-padded">
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 20 }}>
-              <motion.div
-                className="eyebrow"
-                initial={{ opacity: 0, x: -30, filter: 'blur(6px)' }}
-                whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.6, ease: appleEase }}
-              >
-                DESPLIEGUES & PROYECTOS ({filteredProjects.length})
-              </motion.div>
-
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 0, marginBottom: 8 }}>
               {/* Categoría Selector Bar */}
               <div className="project-category-bar">
                 {CATEGORIES.map((cat) => (
