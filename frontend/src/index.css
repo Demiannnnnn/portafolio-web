@@ -86,12 +86,20 @@ body {
 }
 
 .snap-section-padded {
-  padding: 80px 60px 40px;
+  padding: 60px 60px 40px;
 }
 
 @media (max-width: 700px) {
+  .scroll-snap-container {
+    scroll-snap-type: y proximity;
+  }
+
+  .snap-section {
+    min-height: auto;
+  }
+
   .snap-section-padded {
-    padding: 70px 24px 30px;
+    padding: 50px 16px 24px;
   }
 }
 
@@ -178,9 +186,9 @@ a {
 
 .category-tab {
   font-family: var(--mono, monospace);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  padding: 8px 18px;
+  padding: 6px 14px;
   border-radius: 999px;
   border: 1px solid var(--line, #D7DBD2);
   background: var(--bg-panel, rgba(251, 251, 249, 0.8));
@@ -202,4 +210,26 @@ a {
   border-color: var(--accent, #3F6B52);
   color: #ffffff;
   box-shadow: 0 4px 14px rgba(63, 107, 82, 0.25);
+}
+
+@media (max-width: 640px) {
+  .project-category-bar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    gap: 6px;
+    scrollbar-width: none;
+  }
+
+  .project-category-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .category-tab {
+    flex-shrink: 0;
+    font-size: 11px;
+    padding: 5px 12px;
+    white-space: nowrap;
+  }
 }

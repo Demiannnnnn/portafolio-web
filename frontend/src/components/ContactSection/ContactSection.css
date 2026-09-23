@@ -207,15 +207,55 @@
 /* Responsive */
 @media (max-width: 640px) {
   .contact-wrap {
-    padding: 80px 20px 80px;
+    padding: 40px 16px 40px;
+  }
+
+  .contact-container h2 {
+    font-size: clamp(1.6rem, 6vw, 2.2rem);
+  }
+
+  .contact-subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 24px;
   }
 
   .contact-form-card {
-    padding: 28px 20px;
+    padding: 24px 16px;
+    border-radius: 18px;
+  }
+
+  .contact-form {
+    gap: 14px;
   }
 
   .form-row {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 14px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    padding: 12px 14px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
+
+  .form-group textarea {
+    min-height: 100px;
+  }
+
+  .btn-submit-form {
+    padding: 14px 32px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  .contact-wrap {
+    padding: 32px 12px 32px;
+  }
+
+  .contact-form-card {
+    padding: 20px 14px;
   }
 }

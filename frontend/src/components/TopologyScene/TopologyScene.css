@@ -586,4 +586,40 @@
     height: 42vh;
     min-height: 240px;
   }
+
+  .k8s-title {
+    font-size: 20px;
+  }
+
+  .k8s-desc-text {
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .k8s-description {
+    padding: 20px 16px;
+  }
+
+  .k8s-detail-card {
+    padding: 16px 16px;
+  }
+}
+
+@media (max-width: 380px) {
+  .k8s-diagram-container {
+    padding: 16px 12px;
+  }
+
+  .k8s-title {
+    font-size: 18px;
+  }
+
+  .k8s-desc-text {
+    font-size: 12px;
+  }
+
+  .k8s-pill {
+    font-size: 9.5px;
+    padding: 4px 10px;
+  }
 }
