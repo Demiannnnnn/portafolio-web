@@ -1,0 +1,65 @@
+#enviroment and secrets
+.env
+.env.local
+secrets/
+*.txt
+
+#Rust
+/backend/target/
+**/*.rs.bk
+db_user.txt
+db_password.txt
+
+
+#Node.js/React
+/node_modules/
+dist/
+dist-ssr/
+.output
+.vite/
+# npm logs
+npm-debug.log*
+yarn-debug.log*
+yarn-test.log*
+
+# Docker
+*.log
+*.sqlite
+*.sqlite-journal
+
+# SO and editor files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+# Other IDEs
+.idea/
+*.swp
+*.swo
+
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
