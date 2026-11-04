@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yaml -o k8s/
+    kompose.version: 1.38.0 (HEAD)
+  labels:
+    io.kompose.service: database
+  name: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: database
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f compose.yaml -o k8s/
+        kompose.version: 1.38.0 (HEAD)
+      labels:
+        io.kompose.service: database
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_DB_FILE
+              value: /run/secrets/db-name
+            - name: POSTGRES_PASSWORD_FILE
+              value: /run/secrets/db-password
+            - name: POSTGRES_USER_FILE
+              value: /run/secrets/db-user
+          image: postgres:15-alpine
+          name: database
+          ports:
+            - containerPort: 5432
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /run/secrets/db-user
+              name: db-user
+              subPath: db-user
+            - mountPath: /run/secrets/db-password
+              name: db-password
+              subPath: db-password
+            - mountPath: /run/secrets/db-name
+              name: db-name
+              subPath: db-name
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-data
+            - mountPath: /docker-entrypoint-initdb.d
+              name: database-cm1
+      restartPolicy: Always
+      volumes:
+        - name: db-user
+          secret:
+            items:
+              - key: db-user
+                path: db-user
+            secretName: db-user
+        - name: db-password
+          secret:
+            items:
+              - key: db-password
+                path: db-password
+            secretName: db-password
+        - name: db-name
+          secret:
+            items:
+              - key: db-name
+                path: db-name
+            secretName: db-name
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-data
+        - configMap:
+            name: database-cm1
+          name: database-cm1

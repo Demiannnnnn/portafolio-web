@@ -1,0 +1,70 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+CREATE TABLE temporary_visitors (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    session_token UUID NOT NULL UNIQUE,
+    ip_address VARCHAR(64) NOT NULL,
+    ip_hash VARCHAR(64) NOT NULL,
+    browser_name VARCHAR(50),
+    browser_version VARCHAR(20),
+    os_name VARCHAR(50),
+    device_type VARCHAR(20),
+    isp_name VARCHAR(100),
+    country_code VARCHAR(5),
+    city_name VARCHAR(100),
+    first_seen_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE ai_quotas (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    ai_request_count INT DEFAULT 0,
+    time_first_request TIMESTAMPTZ DEFAULT NOW(),
+    visitor_id UUID UNIQUE NOT NULL REFERENCES temporary_visitors(id) ON DELETE CASCADE
+);
+
+CREATE TABLE security_logs (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    event_type VARCHAR(50) NOT NULL,
+    severity VARCHAR(10) NOT NULL,
+    detail JSONB,
+    time_generate TIMESTAMPTZ DEFAULT NOW(),
+    visitor_id UUID REFERENCES temporary_visitors(id) ON DELETE CASCADE
+);
+
+CREATE TABLE ai_public_chat (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    prompt TEXT NOT NULL,
+    response TEXT NOT NULL,
+    tokens_used INT,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    visitor_id UUID REFERENCES temporary_visitors(id) ON DELETE CASCADE
+);
+
+CREATE TABLE infra_snapshots (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    cpu_usage FLOAT,
+    ram_usage FLOAT,
+    disk_usage FLOAT,
+    recorded_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE container_metrics (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    container_name VARCHAR(100) NOT NULL,
+    cpu_usage FLOAT,
+    ram_usage FLOAT,
+    disk_usage FLOAT,
+    recorded_at TIMESTAMPTZ DEFAULT NOW(),
+    snapshot_id UUID REFERENCES infra_snapshots(id) ON DELETE CASCADE
+);
+
+CREATE TABLE contacts (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    subject VARCHAR(200),
+    message TEXT NOT NULL,
+    is_resolved BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    visitor_id UUID REFERENCES temporary_visitors(id) ON DELETE SET NULL
+);

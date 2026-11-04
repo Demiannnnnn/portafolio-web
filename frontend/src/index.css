@@ -1,0 +1,235 @@
+/* ========================================================================
+   DESIGN SYSTEM — Demian Maturana Portfolio
+   ======================================================================== */
+
+/* --- CSS Custom Properties --- */
+:root {
+  --bg: #EFF1EC;
+  --bg-panel: rgba(251, 251, 249, 0.6);
+  --ink: #14181A;
+  --muted: #5B6461;
+  --faint: #9BA39C;
+  --line: #D7DBD2;
+  --line-strong: #B9C0B4;
+  --accent: #3F6B52;
+  --accent-glow: #4ade80;
+  --accent-soft: rgba(63, 107, 82, 0.15);
+
+  --display: 'Sora', sans-serif;
+  --body: 'Inter', sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+}
+
+/* --- Reset --- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow: hidden;
+  height: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.6;
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  touch-action: pan-y;
+  -ms-touch-action: pan-y;
+}
+
+#root {
+  height: 100%;
+}
+
+/* --- Scroll Snap Container --- */
+.scroll-snap-container {
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* --- Individual Snap Sections --- */
+.snap-section {
+  scroll-snap-align: start;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.snap-section-inner {
+  width: 100%;
+  max-width: 1560px;
+  margin: 0 auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.snap-section-padded {
+  padding: 60px 60px 40px;
+}
+
+@media (max-width: 700px) {
+  .scroll-snap-container {
+    scroll-snap-type: y proximity;
+  }
+
+  .snap-section {
+    min-height: auto;
+  }
+
+  .snap-section-padded {
+    padding: 50px 16px 24px;
+  }
+}
+
+/* --- Selection --- */
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* --- Links --- */
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+/* --- Section Spacing (legacy, kept for compatibility) --- */
+.section-spacing {
+  margin-top: 0;
+}
+
+/* --- Eyebrow Label --- */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.eyebrow::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line-strong);
+}
+
+/* --- Status Dot --- */
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: inline-block;
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  50% {
+    opacity: 0.5;
+    box-shadow: 0 0 0 6px rgba(63, 107, 82, 0.05);
+  }
+}
+
+.status-dot.live {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* --- Reduced Motion --- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* --- Project Category Filter Bar --- */
+.project-category-bar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.category-tab {
+  font-family: var(--mono, monospace);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line, #D7DBD2);
+  background: var(--bg-panel, rgba(251, 251, 249, 0.8));
+  color: var(--muted, #5B6461);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(8px);
+}
+
+.category-tab:hover {
+  background: #ffffff;
+  border-color: var(--line-strong, #B9C0B4);
+  color: var(--ink, #14181A);
+  transform: translateY(-1px);
+}
+
+.category-tab.active {
+  background: var(--accent, #3F6B52);
+  border-color: var(--accent, #3F6B52);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(63, 107, 82, 0.25);
+}
+
+@media (max-width: 640px) {
+  .project-category-bar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    gap: 6px;
+    scrollbar-width: none;
+  }
+
+  .project-category-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .category-tab {
+    flex-shrink: 0;
+    font-size: 11px;
+    padding: 5px 12px;
+    white-space: nowrap;
+  }
+}

@@ -1,0 +1,72 @@
+services:
+  proxy:
+    build: ./proxy
+    ports:
+      - "${proxy_port}:${proxy_container_port}"
+    networks:
+      - backend-network
+      - frontend-network
+    depends_on:
+      - backend
+      - frontend
+  frontend:
+    build: ./frontend
+    ports:
+      - "${frontend_port}:${frontend_container_port}"
+    networks:
+      - frontend-network
+
+  backend:
+    build: ./backend
+    ports:
+      - "${backend_port}:${backend_container_port}"
+    environment:
+      - DATABASE_HOST=database
+      - DATABASE_PORT=${db_container_port}
+      - DATABASE_USER_FILE=/run/secrets/db_user
+      - DATABASE_PASSWORD_FILE=/run/secrets/db_password
+      - DATABASE_NAME_FILE=/run/secrets/db_name
+    networks:
+      - backend-network
+    depends_on:
+      - database
+    secrets:
+      - db_user
+      - db_password
+      - db_name
+  database:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_USER_FILE: /run/secrets/db_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+      POSTGRES_DB_FILE: /run/secrets/db_name
+
+    ports:
+      - "${db_port}:${db_container_port}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/migrations:/docker-entrypoint-initdb.d
+    secrets:
+      - db_user
+      - db_password
+      - db_name
+    networks:
+      - backend-network
+
+secrets:
+  db_user:
+    file: ${db_user}
+  db_password:
+    file: ${db_password}
+  db_name:
+    file: ${db_name}
+
+volumes:
+  postgres_data:
+
+networks:
+  backend-network:
+    driver: bridge
+  frontend-network:
+    driver: bridge
