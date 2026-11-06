@@ -40,3 +40,37 @@ impl ContactRepository {
 			.unwrap_or_default()
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	fn request() -> CreateContactRequest {
+		CreateContactRequest {
+			name: "Ana".into(),
+			email: "ana@example.com".into(),
+			subject: "Hola".into(),
+			message: "Mensaje".into(),
+		}
+	}
+
+	#[test]
+	fn create_contact_inicializa_metadatos() {
+		let repo = ContactRepository::new();
+		let before = chrono::Utc::now();
+		let contact = repo.create_contact(request());
+		assert!(!contact.is_resolved);
+		assert!(contact.visitor_id.is_none());
+		assert!(contact.created_at >= before);
+		assert_eq!(repo.list_contacts().len(), 1);
+		assert_eq!(repo.list_contacts()[0].id, contact.id);
+	}
+
+	#[test]
+	fn cada_contacto_tiene_id_unico() {
+		let repo = ContactRepository::new();
+		let a = repo.create_contact(request());
+		let b = repo.create_contact(request());
+		assert_ne!(a.id, b.id);
+	}
+}
