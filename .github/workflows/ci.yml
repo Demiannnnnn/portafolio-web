@@ -14,8 +14,6 @@ jobs:
       run:
         working-directory: backend
     env:
-      # backend/target esta versionado en el repo; compilar fuera de el.
-      CARGO_TARGET_DIR: ${{ github.workspace }}/../cargo-target
       CARGO_TERM_COLOR: always
     steps:
       - uses: actions/checkout@v4
