@@ -297,11 +297,13 @@ function App() {
         if (storedToken) {
           try {
             await getCurrentVisitor(storedToken);
-            if (!cancelled) return;
+            return;
           } catch {
             window.localStorage.removeItem(SESSION_STORAGE_KEY);
           }
         }
+
+        if (cancelled) return;
 
         const registered = await registerVisitor(detectVisitorMetadata());
 
