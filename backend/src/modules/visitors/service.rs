@@ -99,3 +99,31 @@ struct GeoResult {
 	city_name: Option<String>,
 	isp_name: Option<String>,
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn hash_value_es_sha256_en_hex() {
+		assert_eq!(
+			VisitorService::hash_value("127.0.0.1"),
+			"12ca17b49af2289436f303e0166030a21e525d266e209267433801a8fd4071a0"
+		);
+	}
+
+	#[test]
+	fn hash_value_es_determinista_y_distingue_entradas() {
+		let a = VisitorService::hash_value("10.0.0.1");
+		assert_eq!(a, VisitorService::hash_value("10.0.0.1"));
+		assert_ne!(a, VisitorService::hash_value("10.0.0.2"));
+		assert_eq!(a.len(), 64);
+		assert!(a.chars().all(|c| c.is_ascii_hexdigit() && !c.is_ascii_uppercase()));
+	}
+
+	#[test]
+	fn geo_result_por_defecto_esta_vacio() {
+		let geo = GeoResult::default();
+		assert!(geo.country_code.is_none() && geo.city_name.is_none() && geo.isp_name.is_none());
+	}
+}
