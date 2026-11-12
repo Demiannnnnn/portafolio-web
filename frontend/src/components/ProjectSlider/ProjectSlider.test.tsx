@@ -7,7 +7,7 @@ import type { Project } from "../../types/portfolio";
 const sampleProjects: Project[] = [
   {
     namespace: "proj/1",
-    category: "DevOps",
+    category: "DevOps & Cloud",
     statusLabel: "Running · Node 1",
     mediaPlaceholder: "[P1]",
     title: "Project 1",
@@ -17,7 +17,7 @@ const sampleProjects: Project[] = [
   },
   {
     namespace: "proj/2",
-    category: "DevOps",
+    category: "DevOps & Cloud",
     statusLabel: "Running · Node 2",
     mediaPlaceholder: "[P2]",
     title: "Project 2",
@@ -27,7 +27,7 @@ const sampleProjects: Project[] = [
   },
   {
     namespace: "proj/3",
-    category: "DevOps",
+    category: "DevOps & Cloud",
     statusLabel: "Running · Node 3",
     mediaPlaceholder: "[P3]",
     title: "Project 3",
