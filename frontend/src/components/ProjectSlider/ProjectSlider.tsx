@@ -11,11 +11,13 @@ const appleEase = [0.25, 0.46, 0.45, 0.94] as const;
 
 const ProjectSlider = ({ projects }: ProjectSliderProps) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [prevProjects, setPrevProjects] = useState<Project[]>(projects);
 
   // Reset index when project list changes (category filter)
-  useEffect(() => {
+  if (projects !== prevProjects) {
+    setPrevProjects(projects);
     setCurrentIndex(0);
-  }, [projects]);
+  }
 
   const handleNext = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % projects.length);

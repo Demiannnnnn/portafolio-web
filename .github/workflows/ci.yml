@@ -40,7 +40,5 @@ jobs:
         run: npm test
       - name: Build
         run: npm run build
-      - name: Lint (informativo)
-        # eslint reporta 1 error previo (react-hooks/set-state-in-effect en ProjectSlider).
-        continue-on-error: true
+      - name: Lint
         run: npm run lint
