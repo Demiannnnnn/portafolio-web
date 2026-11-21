@@ -1,0 +1,359 @@
+/* ================================================================
+   PROJECT CAROUSEL 3D — Spiral Layout
+   Three.js ghost planes + HTML overlay positioned by Vector3.project()
+   ================================================================ */
+
+/* ── Root ─────────────────────────────────────────────────────── */
+.c3d-root {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Three.js canvas mount ────────────────────────────────────── */
+.c3d-mount {
+  position: relative;
+  width: 100%;
+  height: 65vh;
+  min-height: 520px;
+  max-height: 720px;
+  /* overflow visible: HTML cards can spill beyond the canvas edges */
+  overflow: visible;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  outline: none;
+}
+
+.c3d-mount:active { cursor: grabbing; }
+
+.c3d-mount canvas {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  /* Canvas clips itself; HTML overlay can overflow */
+}
+
+@media (max-width: 860px) { .c3d-mount { height: 58vh; min-height: 440px; } }
+@media (max-width: 540px) { .c3d-mount { height: 52vh; min-height: 380px; } }
+
+/* ── HTML Overlay ─────────────────────────────────────────────── */
+.c3d-overlay {
+  position: absolute;
+  /* Extend overlay laterally so cards can position beyond canvas edges */
+  inset: 0 -200px;
+  pointer-events: none;
+  overflow: visible;
+}
+
+/* ── Card base ────────────────────────────────────────────────── */
+.c3d-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  /* Fixed width — scale is applied via transform from JS */
+  width: 440px;
+  max-width: min(440px, calc(100vw - 48px));
+
+  background: #FFFFFF;
+  border: 1px solid #E0E0DC;
+  border-radius: 16px;
+  overflow: hidden;
+
+  /* ONLY transition opacity and filter — transform is set per-frame by JS */
+  transition:
+    opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    filter  0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.32s ease;
+
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.c3d-card--active {
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.10), 0 4px 14px rgba(0, 0, 0, 0.06);
+  pointer-events: auto !important;
+}
+
+/* ── Top bar ──────────────────────────────────────────────────── */
+.c3d-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  border-bottom: 1px solid #E0E0DC;
+  background: #FAFAF8;
+  gap: 10px;
+}
+
+.c3d-ns {
+  font-family: var(--mono, 'IBM Plex Mono', monospace);
+  font-size: 10.5px;
+  color: #6B7280;
+  font-weight: 400;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1;
+}
+
+.c3d-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono, 'IBM Plex Mono', monospace);
+  font-size: 10px;
+  color: #6B7280;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.c3d-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #8FA888;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 2.5px rgba(143, 168, 136, 0.2);
+}
+
+/* ── Body grid ────────────────────────────────────────────────── */
+.c3d-body {
+  display: grid;
+  grid-template-columns: 156px 1fr;
+  gap: 18px;
+  padding: 20px;
+  align-items: start;
+}
+
+@media (max-width: 500px) {
+  .c3d-body {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 14px;
+  }
+}
+
+/* ── Media ───────────────────────────────────────────────────── */
+.c3d-media {
+  width: 156px;
+  flex-shrink: 0;
+  aspect-ratio: 4/3;
+  border: 1px solid #E0E0DC;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #F0EFEB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.c3d-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.c3d-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: repeating-linear-gradient(
+    135deg,
+    #EAEAE6 0px, #EAEAE6 3px,
+    #F0EFEB 3px, #F0EFEB 9px
+  );
+}
+
+.c3d-placeholder span {
+  font-family: var(--mono, 'IBM Plex Mono', monospace);
+  font-size: 8.5px;
+  color: #9CA3AF;
+  text-align: center;
+  padding: 8px;
+  line-height: 1.5;
+}
+
+/* ── Text column ─────────────────────────────────────────────── */
+.c3d-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.c3d-title {
+  font-family: var(--display, 'Sora', sans-serif);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.28;
+  letter-spacing: -0.022em;
+  color: #1A1A18;
+  margin: 0 0 7px;
+}
+
+.c3d-desc {
+  font-family: var(--body, 'Inter', sans-serif);
+  font-size: 0.77rem;
+  color: #6B7280;
+  line-height: 1.68;
+  margin: 0 0 11px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Chips ───────────────────────────────────────────────────── */
+.c3d-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.c3d-chip {
+  font-family: var(--mono, 'IBM Plex Mono', monospace);
+  font-size: 9px;
+  padding: 2px 8px;
+  border: 1px solid #E0E0DC;
+  color: #6B7280;
+  border-radius: 999px;
+  background: #FFFFFF;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+
+/* ── Links ───────────────────────────────────────────────────── */
+.c3d-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.c3d-link {
+  font-family: var(--mono, 'IBM Plex Mono', monospace);
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #1A1A18;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.c3d-link:hover { color: #8FA888; }
+
+.c3d-arrow {
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.c3d-link:hover .c3d-arrow { transform: translateX(3px); }
+
+/* ── Counter ─────────────────────────────────────────────────── */
+.c3d-counter {
+  position: absolute;
+  top: 16px;
+  left: 20px;
+  pointer-events: none;
+  z-index: 30;
+}
+
+.c3d-counter-inner {
+  font-family: var(--mono, 'IBM Plex Mono', monospace);
+  font-size: 11px;
+  font-weight: 600;
+  color: #1A1A18;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid #E0E0DC;
+  border-radius: 999px;
+  padding: 4px 14px;
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(6px);
+}
+
+/* ── Drag hint ───────────────────────────────────────────────── */
+.c3d-hint {
+  position: absolute;
+  bottom: 16px;
+  right: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono, 'IBM Plex Mono', monospace);
+  font-size: 10px;
+  color: #9CA3AF;
+  pointer-events: none;
+  z-index: 30;
+  animation: c3d-fadeout 1s ease 4s forwards;
+}
+
+.c3d-hint svg {
+  width: 20px;
+  height: 12px;
+  opacity: 0.5;
+}
+
+@keyframes c3d-fadeout { to { opacity: 0; } }
+
+/* ── Dots ────────────────────────────────────────────────────── */
+.c3d-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  padding-top: 2px;
+}
+
+.c3d-dot-btn {
+  height: 6px;
+  width: 6px;
+  border-radius: 999px;
+  border: none;
+  background: #C8C8C4;
+  cursor: pointer;
+  padding: 0;
+  transition: width 0.22s cubic-bezier(0.22, 1, 0.36, 1), background 0.22s ease;
+}
+
+.c3d-dot-btn:hover { background: #9CA3AF; }
+
+.c3d-dot-btn--active {
+  width: 22px;
+  background: #8FA888;
+}
+
+.c3d-dot-btn:focus-visible {
+  outline: 2px solid #8FA888;
+  outline-offset: 3px;
+}
+
+/* ── Empty ───────────────────────────────────────────────────── */
+.c3d-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 80px 0;
+  color: #9CA3AF;
+  font-family: var(--mono, 'IBM Plex Mono', monospace);
+  font-size: 13px;
+}
+
+.c3d-empty-icon { font-size: 28px; opacity: 0.35; }
