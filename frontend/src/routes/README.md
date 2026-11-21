@@ -1,1 +1,1 @@
-# Folder reserver for routes
+# Folder reserved for routes

@@ -1,0 +1,57 @@
+# --- Environment and secrets (never commit) ---
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+secrets/
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*.json
+token*.txt
+db_user.txt
+db_password.txt
+db_name.txt
+k8s/*-secret.yaml
+k8s/*-secret.yml
+
+# --- Rust (backend) ---
+target/
+**/target/
+**/*.rs.bk
+
+# --- Node / Vite (frontend) ---
+node_modules/
+dist/
+dist-ssr/
+build/
+coverage/
+.vite/
+.eslintcache
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# --- Java / Python leftovers ---
+*.class
+*.jar
+__pycache__/
+*.py[cod]
+
+# --- Logs and caches ---
+*.log
+.cache/
+tmp/
+
+# --- OS / editors ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
