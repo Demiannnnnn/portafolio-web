@@ -3,11 +3,21 @@ use std::sync::Arc;
 use axum::{routing::get, Router};
 
 use crate::modules::contact::{repository::ContactRepository, routes::contact_routes, service::ContactService};
-use crate::modules::visitors::{repository::VisitorRepository, routes::visitor_routes, service::VisitorService};
+use crate::modules::visitors::{
+    controller::client_ip_config, repository::VisitorRepository, routes::visitor_routes,
+    service::VisitorService,
+};
 use crate::shared::db::connect_postgres;
 use crate::shared::state::AppState;
 
 pub async fn build_app() -> Router {
+    // Lee TRUSTED_PROXY_COUNT / TRUST_CF_CONNECTING_IP al arrancar.
+    let ip_config = client_ip_config();
+    println!(
+        "IP de visitantes: {} proxies de confianza, cf-connecting-ip {}",
+        ip_config.trusted_proxies,
+        if ip_config.trust_cf { "activado" } else { "ignorado" }
+    );
     let repository = Arc::new(ContactRepository::new());
     let contact_service = Arc::new(ContactService::new(repository));
     let database = connect_postgres()
