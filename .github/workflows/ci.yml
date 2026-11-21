@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      # backend/target esta versionado en el repo; compilar fuera de el.
+      CARGO_TARGET_DIR: ${{ github.workspace }}/../cargo-target
+      CARGO_TERM_COLOR: always
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Build
+        run: cargo build --locked
+      - name: Tests
+        run: cargo test --locked
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - name: Tests
+        run: npm test
+      - name: Build
+        run: npm run build
+      - name: Lint (informativo)
+        # eslint reporta 1 error previo (react-hooks/set-state-in-effect en ProjectSlider).
+        continue-on-error: true
+        run: npm run lint
